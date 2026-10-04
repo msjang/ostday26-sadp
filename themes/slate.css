@@ -1,0 +1,48 @@
+/*! deck-theme
+name: 슬레이트 — 차분한 남색, 산세리프. 일반 발표용 기본값
+fonts: Pretendard Variable (SIL OFL 1.1)
+source: 직접 조정한 값입니다. 특정 프레임워크에서 가져오지 않았습니다.
+*/
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+
+:root{
+  /* ── 글꼴 ─────────────────────────────────────────────────────────── */
+  --sans:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo",
+         "Noto Sans KR","Malgun Gothic",system-ui,sans-serif;
+  --serif:"Noto Serif KR",Georgia,"Nanum Myeongjo",serif;
+  --mono:"D2Coding",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;  /* D2Coding 먼저 — 한글 열 맞춤 */
+  --body-font:var(--sans);
+  --head-font:var(--sans);
+
+  /* ── 바탕 ─────────────────────────────────────────────────────────── */
+  --bg:#7d848d;            /* paper 모드에서 종이 바깥 */
+  --surface:#ffffff;       /* 슬라이드 바탕 */
+  --tint:#f4f7fb;          /* card header · chapnav hover */
+  --tint-soft:#fafbfd;     /* card footer */
+  --chip:#eef3fb;          /* 인라인 코드 */
+  --code-bg:#f8f8f8;       /* 코드블록 */
+  --track:#e8edf4;         /* meter 트랙 */
+
+  /* ── 글자 ─────────────────────────────────────────────────────────── */
+  --ink:#1c2c44;
+  --ink-soft:#6b7684;
+  --ink-faint:#8a93a0;
+
+  /* ── 선 ───────────────────────────────────────────────────────────── */
+  --rule:#dde3ec;
+  --rule-soft:#eef1f6;
+  --rule-strong:#99a4b5;
+
+  /* ── 강조 ─────────────────────────────────────────────────────────── */
+  --accent:#245ea8;
+  --accent-ink:#ffffff;    /* 강조색 위에 올라가는 글자 */
+
+  /* ── 간지(.divider) ───────────────────────────────────────────────── */
+  --divider-bg:#1c2c44;
+  --divider-ink:#ffffff;
+  --divider-soft:#dbe7f6;  /* .lead */
+  --divider-dim:#bcd3ef;   /* .kicker · .ref */
+  --divider-rule:rgba(255,255,255,.18);
+
+  /* 의미색은 deck.css 의 엔진 기본값을 씁니다 */
+}

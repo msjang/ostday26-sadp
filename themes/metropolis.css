@@ -1,0 +1,67 @@
+/*! deck-theme
+name: 메트로폴리스 — 거의 무채색에 주황 한 점. 학회 발표용
+fonts: Fira Sans · Fira Code (SIL OFL 1.1) · Pretendard Variable (SIL OFL 1.1)
+source: LaTeX Beamer 테마 Metropolis (matze/mtheme) 의 색 정의에서 가져왔습니다
+  mDarkTeal #23373b · mLightBrown #EB811B · mLightGreen #14B03D · bg = black!2
+license: CC BY-SA 4.0  ⚠ 아래 주의 참고
+url: https://github.com/matze/mtheme
+
+⚠ 라이선스 주의 — 이 파일만 다릅니다.
+   Metropolis 는 CC BY-SA 4.0 입니다. "테마를 고쳐서 재배포하면 저작권 표시를
+   유지하고 같은 라이선스로 배포해야 한다"는 조건이 붙습니다.
+   (이 테마로 **만든 발표자료**에는 영향이 없습니다 — 원 저자 명시)
+   저장소 전체를 다른 라이선스로 묶고 싶으면 이 파일만 지우면 됩니다.
+   나머지 테마는 MIT / Apache-2.0 이라 그런 의무가 없습니다.
+*/
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;700&family=Fira+Code:wght@400;600&display=swap");
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+
+:root{
+  --sans:"Fira Sans","Pretendard Variable",Pretendard,
+         "Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  --serif:"Noto Serif KR",Georgia,serif;
+  --mono:"D2Coding",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;  /* D2Coding 먼저 — 한글 열 맞춤 */
+  --body-font:var(--sans);
+  --head-font:var(--sans);
+
+  --bg:#5c6a6e;
+  --surface:#fafafa;       /* beamer 의 black!2 */
+  --tint:#f0f0ee;
+  --tint-soft:#f6f6f4;
+  --chip:#eceeed;
+  --code-bg:#f0f0ee;
+  --track:#dcdfde;
+
+  --ink:#23373b;           /* mDarkTeal */
+  --ink-soft:#5a6a6d;
+  --ink-faint:#8b9699;
+
+  --rule:#cfd5d4;
+  --rule-soft:#e4e7e6;
+  --rule-strong:#9aa4a6;
+
+  /* Metropolis 는 제목·구조를 거의 무채색(mDarkTeal)으로 두고
+     주황(mLightBrown)은 **강조 한 점**에만 씁니다. 그 배분을 그대로 옮겼습니다. */
+  --accent:#23373b;        /* mDarkTeal — 제목·chapnav */
+  --accent-ink:#fafafa;
+  --accent-2:#eb811b;      /* mLightBrown — 강조 한 점 */
+
+  --divider-bg:#23373b;    /* mDarkTeal */
+  --divider-ink:#fafafa;
+  --divider-soft:#d6dcdb;
+  --divider-dim:#eb811b;   /* kicker 를 주황으로 — Metropolis 의 그 한 점 */
+  --divider-rule:rgba(250,250,250,.20);
+
+  /* 의미색은 deck.css 의 엔진 기본값을 씁니다 */
+}
+
+/* Metropolis 의 표정 — 각진 모서리, 제목 아래 가는 선, 주황 악센트 바 */
+.reveal .card, .reveal .alert, .reveal .meter, .reveal .meter span{ border-radius:2px }
+.reveal .chapnav a{ border-radius:2px }
+.reveal .slides section:not(.bare) h2{
+  border-bottom:1px solid var(--rule); padding-bottom:.25em;
+}
+.reveal section.divider hr,
+.reveal section.divider .rule{ background:var(--accent-2) }
+.reveal strong{ color:var(--ink) }
+.reveal a{ color:var(--accent-2) }

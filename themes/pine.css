@@ -1,0 +1,47 @@
+/*! deck-theme
+name: 파인 — 짙은 녹색 제목에 호박색 점 하나
+fonts: Pretendard Variable (SIL OFL 1.1)
+source: 직접 조정한 값입니다. 특정 프레임워크에서 가져오지 않았습니다.
+
+   cobalt 와 같은 배분, 계열만 녹색입니다. 제목·강조는 녹색 하나로 묶고
+   호박색은 글머리표·악센트 바·키커 같은 작은 자리에만.
+   ⚠ --accent-2(호박)는 본문 글자색으로 쓰지 마세요.
+*/
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+
+:root{
+  --sans:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo",
+         "Noto Sans KR",system-ui,sans-serif;
+  --serif:"Noto Serif KR",Georgia,serif;
+  --mono:"D2Coding",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;  /* D2Coding 먼저 — 한글 열 맞춤 */
+  --body-font:var(--sans);
+  --head-font:var(--sans);
+
+  --bg:#6c746f;
+  --surface:#ffffff;
+  --tint:#f1f7f3;
+  --tint-soft:#f8fbf9;
+  --chip:#e8f3ec;
+  --code-bg:#f6f8f7;
+  --track:#e2eae5;
+
+  --ink:#16231d;
+  --ink-soft:#566159;
+  --ink-faint:#8a948d;
+
+  --rule:#d8e0da;
+  --rule-soft:#ebefec;
+  --rule-strong:#a6b0a9;
+
+  --accent:#1d6b4f;        /* 제목 · 링크 · chapnav */
+  --accent-ink:#ffffff;
+  --accent-2:#c9780d;      /* 점 — 글머리표 · 악센트 바 · 키커 */
+
+  --divider-bg:#102a21;
+  --divider-ink:#ffffff;
+  --divider-soft:#c5dbd0;
+  --divider-dim:#e0952b;   /* 짙은 배경 위에서는 한 단계 밝게 */
+  --divider-rule:rgba(255,255,255,.18);
+
+  /* 의미색은 deck.css 의 엔진 기본값을 씁니다 */
+}

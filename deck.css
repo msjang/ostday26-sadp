@@ -1,0 +1,632 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   한글 고정폭 — D2Coding (SIL OFL 1.1, fonts/OFL.txt)
+   macOS·Windows 에 한글 고정폭 기본 글꼴이 없습니다. 그래서 코드 블록에
+   한글이 섞이면 라틴만 고정폭으로 잡히고 한글은 가변폭으로 떨어져 열이 어긋납니다.
+   CSS 폰트 폴백은 글자 단위라, 목록 뒤쪽에 적어 두면 설치된 기계에서만 맞습니다.
+   같이 싣고 --mono 맨 앞에 둬야 라틴·한글이 한 가족에서 나와 정렬이 섭니다.
+   ═══════════════════════════════════════════════════════════════════════ */
+@font-face{
+  font-family:"D2Coding"; font-style:normal; font-weight:400; font-display:swap;
+  src:url("fonts/D2Coding-Regular.woff2") format("woff2");
+}
+@font-face{
+  font-family:"D2Coding"; font-style:normal; font-weight:700; font-display:swap;
+  src:url("fonts/D2Coding-Bold.woff2") format("woff2");
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   0. 기하 — 색·글꼴은 themes/*.css 가 가집니다
+   ═══════════════════════════════════════════════════════════════════════ */
+:root{
+  --deck-pad-x:56px;           /* 슬라이드 좌우 여백 */
+  --deck-pad-top:84px;         /* chapnav 자리 포함 */
+  --deck-pad-bottom:60px;      /* footer 자리 포함 */
+  --chapnav-h:52px;
+  --footer-h:40px;
+  --col-gap:1em;               /* ::: columns 사이 간격 */
+  /* 가독 행폭(measure). 한글은 1em ≈ 한 글자라 38em ≈ 한 줄 38자입니다.
+     16:9 에서는 본문 폭보다 커서 사실상 안 걸리고, ratio:'full' 이나 와이드
+     모니터에서 한 줄이 70자 넘게 늘어나는 것만 막습니다.
+     ⚠ 라틴 기준 값(20~25em)을 그대로 쓰면 한글에서 터무니없이 좁아집니다. */
+  --measure:38em;
+  --figcap-size:.5em;          /* 그림 캡션 크기 */
+  /* 위·아래 첨자 — 그 자리 글자 크기의 절반.
+     ⚠ medium 같은 절대값(16px)으로 두면 {.fit}/.dense* 로 글자를 줄일 때
+       첨자만 제자리에 남습니다. em 이어야 같이 줄어듭니다. */
+  --supsub-size:.5em;
+  /* 그림 테두리. .slides 는 통째로 scale 되므로 1px 은 이미 덱 크기에 비례해
+     줄었다 늘어납니다 — 물리 1px 로 고정되는 게 아닙니다.
+     색은 테마의 --rule 이라 어두운 테마에서도 알아서 맞습니다.
+     빼려면 0 으로, 그림 하나만 빼려면 그 그림에 .noborder.                */
+  --img-border:1px solid var(--rule);
+  --ref-size:14px;             /* ::: ref 글자 크기. 본문 33.6px 의 약 1/2.4.
+                                  오버레이는 .slides 바로 아래라 em 기준이
+                                  본문과 달라서 px 로 둡니다 */
+  /* 슬라이드 좌표계 높이. deck.js 가 DECK.ratio 에 맞춰 덮어씁니다.
+     (16:9=720 · 16:10=800 · 4:3=768 · full=창 높이)                      */
+  --slide-h:720px;
+  /* 상·하단 바를 빼고 본문에 실제로 남는 높이 */
+  --content-h:calc(var(--slide-h) - var(--deck-pad-top) - var(--deck-pad-bottom));
+  /* 그림·도식 최대 높이. 제목 한 줄 자리(120px)를 빼 둔 값 — 좁으면 키우세요 */
+  --media-max-h:calc(var(--content-h) - 120px);
+
+  /* 포인트색. 테마가 안 주면 --accent 와 같습니다 — 기존 테마는 변화 없음.
+     "제목은 계열색, 점 하나만 다른 색" 배분을 쓰는 테마가 이걸 채웁니다.
+     ⚠ 작게 쓰는 색입니다. 본문 글자색으로는 쓰지 마세요(대비 부족). */
+  --accent-2:var(--accent);
+
+  /* ── 의미색은 엔진이 가집니다 ──────────────────────────────────────
+     ok/warn/danger/info 는 **뜻**이라서 테마를 바꿔도 움직이면 안 됩니다.
+     "경고는 늘 주황"이어야 저자가 테마를 갈아끼울 때 내용을 다시 안 봅니다.
+     구조색(surface·rule·accent)만 테마가 가집니다.
+     어두운 테마는 대비 때문에 어쩔 수 없이 덮습니다(themes/nord.css).     */
+  --ok-fg:#12795c;     --ok-bg:#e3f4ee;
+  --warn-fg:#c46a10;   --warn-bg:#fdf3e6;
+  --danger-fg:#c33333; --danger-bg:#fdecec;
+  --info-fg:#2b6cb0;   --info-bg:#e9f1fb;
+  --caution-fg:#7d6200; --caution-bg:#fcf7e0;
+  --caution-line:#dfb100;              /* ANSI 주의 — 띠는 노랑, 글자는 어둡게 */
+}
+html.no-chapnav{ --deck-pad-top:44px }
+html.no-footer { --deck-pad-bottom:44px }
+
+/* PDF 내보내기(?print-pdf) — 인쇄에서는 '종이'가 용지 자체이므로
+   회색 바탕과 그림자를 끈다. 상·하단 바는 스크립트가 .pdf-page 마다
+   새로 꽂는다(decoratePdfPages).
+   @page 크기는 여기서 정하지 않습니다 — reveal 이 설정된 width/height 로
+   `@page{size: W*(1+margin) H*(1+margin)}` 를 런타임에 직접 주입합니다.
+   여기 적으면 비율을 바꿨을 때 어긋납니다.                                */
+html.print-pdf.paper .reveal-viewport{ background:var(--surface) }
+html.print-pdf .reveal .deck-paper{ display:none !important }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   1. 종이 모드 / 정렬
+   ═══════════════════════════════════════════════════════════════════════
+   .deck-paper 는 스크립트가 .slides 의 첫 자식으로 꽂는 흰 판입니다.
+   .slides 는 정확히 width×height(기본 1280x720) 이고 통째로 scale 되므로
+   판도 같이 줄었다 늘어납니다. data-background-* 가 걸린 슬라이드에서는
+   스크립트가 판을 숨깁니다(풀블리드).                                      */
+html.paper .reveal-viewport{ background:var(--bg) }
+.reveal .deck-paper{ display:none }
+html.paper .reveal .deck-paper{
+  display:block; position:absolute; inset:0; z-index:0;
+  background:var(--surface);
+  box-shadow:0 12px 48px rgba(0,0,0,.33);
+}
+
+/* 가로 정렬 — 전역은 <html>, 슬라이드별은 .tleft / .tcenter */
+html.h-left   .reveal .slides{ text-align:left }
+html.h-center .reveal .slides{ text-align:center }
+html.h-right  .reveal .slides{ text-align:right }
+/* 슬라이드별·열별·요소별 뒤집기는 아래 .tleft/.tright/.tcenter 한 벌로 끝냅니다.
+   직접 지정한 값은 상속값을 늘 이기므로 전역 설정을 특정도 없이 덮습니다 —
+   section 전용 규칙을 따로 둘 필요가 없습니다.                            */
+
+/* 세로 정렬은 CSS 가 아니라 reveal 네이티브(.center 클래스)로 처리합니다.
+   reveal 소스: A.center || t.classList.contains("center")
+   → 전역 center:false 로 두고 스크립트가 슬라이드마다 .center 를 붙입니다.
+     그래야 PDF 내보내기 경로까지 같은 계산을 탑니다.                       */
+
+/* 본문 안전영역 — 상·하단 바와 겹치지 않게.
+   ⚠ 자식 결합자(>)가 아니라 후손 선택자입니다. ?print-pdf 에서 reveal 이
+     section 을 .slides > .pdf-page > section 으로 한 단계 더 넣기 때문에,
+     `.slides>section` 으로 쓰면 PDF 에서만 여백이 통째로 사라집니다.        */
+.reveal .slides section:not(.stack){
+  box-sizing:border-box;
+  padding:var(--deck-pad-top) var(--deck-pad-x) var(--deck-pad-bottom);
+}
+.reveal .slides section.center{ padding-bottom:var(--deck-pad-top) }
+.reveal .slides section.bare  { padding:56px var(--deck-pad-x) }
+
+/* ?print-pdf 에서 reveal 이 섹션 여백을 강제로 지웁니다 —
+     html.reveal-print .reveal .slides section{ padding:0!important }
+   그래서 인쇄용으로 같은 값을 !important 로 다시 줘야 바와 안 겹칩니다.
+   (reveal 은 이 클래스를 붙인 뒤에 scrollHeight 를 재므로 쪽 계산도 맞음)  */
+html.reveal-print .reveal .slides section:not(.stack){
+  padding:var(--deck-pad-top) var(--deck-pad-x) var(--deck-pad-bottom) !important;
+}
+html.reveal-print .reveal .slides section.center{ padding-bottom:var(--deck-pad-top) !important }
+html.reveal-print .reveal .slides section.bare  { padding:56px var(--deck-pad-x) !important }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   2. 상단 chapnav · 하단 footer
+   ═══════════════════════════════════════════════════════════════════════
+   둘 다 스크립트가 .slides 에 한 번만 꽂습니다. 섹션마다 넣지 않습니다.
+   section 바깥이라 section padding·세로정렬의 영향을 안 받고,
+   .slides 안이라 슬라이드와 같은 비율로 축소/확대됩니다.
+   .reveal .slides 는 pointer-events:none 이므로 클릭 받으려면 auto 필수.    */
+.reveal .chapnav{
+  position:absolute; top:0; left:0; right:0; height:var(--chapnav-h);
+  display:flex; align-items:center; gap:.4em;
+  padding:0 var(--deck-pad-x); box-sizing:border-box;
+  border-bottom:1px solid var(--rule);
+  font-size:14px; line-height:1;
+  pointer-events:auto; z-index:20;
+}
+/* 제목 = 첫 장으로 가는 링크. chapnav 의 알약 스타일은 벗겨 둡니다 */
+.reveal .chapnav a.deck-title{
+  font-weight:700; color:var(--ink); margin-right:auto;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:46%;
+  padding:0; border-radius:0; text-decoration:none;
+}
+.reveal .chapnav a.deck-title:hover{ background:none; color:var(--accent) }
+.reveal .chapnav a{
+  color:var(--ink-soft); text-decoration:none; white-space:nowrap;
+  padding:.35em .8em; border-radius:999px; transition:background .15s, color .15s;
+}
+.reveal .chapnav a:hover{ background:var(--tint); color:var(--ink) }
+.reveal .chapnav a.on{ background:var(--accent); color:var(--accent-ink); font-weight:700 }
+
+.reveal .deckfoot{
+  position:absolute; bottom:0; left:0; right:0; height:var(--footer-h);
+  display:flex; align-items:center; justify-content:center;
+  padding:0 var(--deck-pad-x); box-sizing:border-box;
+  border-top:1px solid var(--rule-soft);
+  font-size:13px; line-height:1; color:var(--ink-faint);
+  pointer-events:none; z-index:20;
+}
+.reveal .deckfoot .pageno{ position:absolute; right:var(--deck-pad-x); font-variant-numeric:tabular-nums }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   3. 본문 타이포
+   ═══════════════════════════════════════════════════════════════════════ */
+/* 글꼴·바탕 — 값은 themes/*.css 가 가집니다 */
+.reveal{ font-family:var(--body-font); color:var(--ink) }
+.reveal h1,.reveal h2,.reveal h3,.reveal h4,.reveal h5,.reveal h6{ font-family:var(--head-font) }
+.reveal pre, .reveal code, .reveal kbd, .reveal samp{ font-family:var(--mono) }
+.reveal-viewport{ background:var(--surface) }
+.reveal a{ color:var(--accent) }
+
+/* white 테마는 제목에 text-transform:uppercase 를 겁니다.
+   한글은 영향이 없지만 제목에 섞인 영문·코드가 전부 대문자가 되므로 끕니다. */
+.reveal h1,.reveal h2,.reveal h3,.reveal h4,.reveal h5,.reveal h6{
+  text-transform:none;
+  color:var(--ink);        /* white 테마의 --r-heading-color(#222) 를 끈다.
+                              안 끄면 어두운 테마에서 제목이 배경에 묻는다 */
+}
+.reveal h1{ font-size:2.0em }
+.reveal h2{ color:var(--accent); font-size:1.35em; margin-bottom:.5em }
+.reveal section{ font-size:calc(var(--fs-base, .80) * 1em) }
+.reveal ul{ display:block }
+.reveal li{ margin:.18em 0 }
+.reveal .slides li::marker{ color:var(--accent-2) }   /* 「점」 */
+.reveal pre{ box-shadow:none; font-size:.6em }
+.reveal pre code{ border-radius:8px; padding:.8em 1em; max-height:none }
+.reveal pre code:not(.language-mermaid){ background:var(--code-bg) }
+.reveal .fullpre pre{ width:100% }                 /* 코드블록 폭 100% (opt-in) */
+.reveal code:not(pre code){ color:var(--accent); background:var(--chip); padding:.05em .35em; border-radius:5px }
+.reveal table{ font-size:.9em }
+.reveal blockquote{ width:auto; font-size:.95em }
+/* ── 그림·도식이 footer 아래로 흘러내리지 않게 ─────────────────────────
+   ⚠ 여기에 vh 를 쓰면 안 됩니다. .slides 는 transform 으로 확대·축소되므로
+     슬라이드 안의 1px 과 뷰포트의 1px 이 다릅니다. vh 는 뷰포트 기준이라
+     창이 크면 슬라이드 높이를 넘어 footer 를 뚫고 내려갑니다.
+   ⚠ white 테마의 `.reveal img{max-height:95%}` 도 소용이 없습니다 —
+     section 은 높이가 auto 인 absolute 박스라 % 가 풀리지 않습니다.        */
+.reveal .slides img,
+.reveal .slides video,
+.reveal .slides iframe{
+  max-width:100%; height:auto;
+  max-height:var(--media-max-h);
+  object-fit:contain;
+}
+.reveal .slides img{ border:var(--img-border) }
+.reveal .slides img.noborder{ border:0 }
+/* ── 그림 캡션 ─────────────────────────────────────────────────────────
+   inline-block 이라 그림 폭만큼만 차지하고, 열의 text-align 을 따릅니다
+   (.inward 로 안쪽 정렬한 열에서도 그림·캡션이 같이 붙습니다).          */
+.reveal figure{ display:inline-table; margin:.4em 0; max-width:100% }
+.reveal figure img{ display:block; margin:0 }
+
+/* 문단에 그림만 있을 때 (= {.cap} 없이 figure 로 안 감싼 경우).
+   img 는 inline 이라 baseline 아래 글줄 여유가 남습니다 — 실측 30px 이
+   그림 밑에 죽은 채로 깔려 있었고, {.fit} 이 그만큼 더 줄이고 있었습니다.
+   범인은 둘입니다 — reveal 의 `section img{margin:15px 0}` 과 baseline 여유.
+   ⚠ display:block 으로 바꾸면 text-align 이 안 먹어 정렬이 바뀝니다.
+     inline 인 채로 마진과 baseline 여유만 걷어냅니다. */
+.reveal .slides p:has(> img:only-child) > img{ margin:0; vertical-align:bottom }
+/* table-caption 은 표 폭을 늘리지 않습니다 — 캡션이 길어도 figure 는
+   그림 폭에 머물고 캡션만 줄바꿈됩니다. inline-block 으로 두면 긴 캡션이
+   figure 를 열 전체로 벌려서 .inward 우측정렬이 안 먹습니다. */
+.reveal figcaption{
+  display:table-caption; caption-side:bottom;
+  font-size:var(--figcap-size); line-height:1.4; color:var(--ink-soft);
+  text-align:center; padding-top:.35em;
+}
+.reveal section.divider figcaption{ color:var(--divider-soft) }
+/* 번호 — DECK.figureNumber 를 켜면 <html> 에 fignum 이 붙습니다 */
+.reveal .slides{ counter-reset:fig }
+html.fignum .reveal figcaption::before{
+  counter-increment:fig;
+  content:var(--fig-label,"그림 ") counter(fig) ". ";
+  font-weight:700; color:var(--ink);
+}
+
+.reveal .mermaid{ display:flex; justify-content:center; margin:.3em 0 }
+.reveal .mermaid svg{ width:100%; max-width:100% !important; height:auto; max-height:var(--media-max-h) }
+
+/* 마크다운 원본과, 파싱 전 <textarea data-template> 가 잠깐 보이는 것 방지 */
+#deck{ display:none }
+[data-markdown]:not([data-markdown-parsed]) textarea{ display:none }
+
+/* .cover — 표지. 어느 레벨에 붙든(h1/h2) 같은 크기로 */
+.reveal section.cover h1,
+.reveal section.cover h2{ font-size:2.0em; color:var(--ink); margin-bottom:.4em }
+.reveal section.cover.divider h1,
+.reveal section.cover.divider h2{ color:var(--divider-ink) }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   4. 레이아웃
+   ═══════════════════════════════════════════════════════════════════════ */
+/* ── pandoc/Quarto 식 fenced div (권장) ────────────────────────────────
+     ::: columns
+     ::: {.column width="35%"}
+     왼쪽
+     :::
+     ::: {.column width="62%"}
+     오른쪽
+     :::
+     :::
+   width 를 안 주면 균등 분배됩니다.                                        */
+.reveal .columns{ display:flex; gap:var(--col-gap); align-items:flex-start }
+.reveal .columns>.column{ flex:1 1 0; min-width:0 }
+.reveal .columns>.column[style*="width"]{ flex:0 0 auto }
+
+/* ── 열 정렬 ───────────────────────────────────────────────────────────
+   그림 | 글 을 나란히 놓을 때 서로 안쪽(가운데 여백)으로 붙이면 한 덩어리로
+   읽힙니다. `.inward` 한 단어로 — 첫 열은 오른쪽, 끝 열은 왼쪽 정렬.
+
+     ::: {.columns .inward .middle}
+     ::: {.column width="40%"}
+     ![](diagram.svg)
+     :::
+     ::: {.column width="58%"}
+     설명 글
+     :::
+     :::
+
+   낱개로 주려면 열에 직접 `.tright` / `.tleft` / `.tcenter`.            */
+/* 어디에나 붙습니다 — 슬라이드(제목 중괄호) · 열 · 문단 · span.
+     ## 제목 {.tcenter}            슬라이드 전체
+     ::: {.column .tright}         그 열만
+     ::: {.tright}                 그 덩어리만
+     [오른쪽]{.tright}             (인라인에는 효과 없음 — 블록에 쓰세요) */
+.reveal .tleft  { text-align:left }
+.reveal .tright { text-align:right }
+.reveal .tcenter{ text-align:center }
+.reveal .tjustify{ text-align:justify; text-justify:inter-character }
+.reveal .columns.inward  > .column:first-child{ text-align:right }
+.reveal .columns.inward  > .column:last-child { text-align:left }
+.reveal .columns.outward > .column:first-child{ text-align:left }
+.reveal .columns.outward > .column:last-child { text-align:right }
+/* 세로 정렬 — 높이가 다른 그림과 글을 맞출 때 */
+.reveal .columns.middle{ align-items:center }
+.reveal .columns.bottom{ align-items:flex-end }
+.reveal .columns.stretch{ align-items:stretch }
+
+/* ── 12 컬럼 그리드 (기존 덱 호환) ──────────────────────────────────────
+   .row 안에 .col-N (N=1~12). 한 행 합 = 12.                              */
+.reveal .row{ display:grid; grid-template-columns:repeat(12,1fr); gap:var(--col-gap); align-items:start }
+.reveal .col-1{grid-column:span 1}   .reveal .col-2{grid-column:span 2}
+.reveal .col-3{grid-column:span 3}   .reveal .col-4{grid-column:span 4}
+.reveal .col-5{grid-column:span 5}   .reveal .col-6{grid-column:span 6}
+.reveal .col-7{grid-column:span 7}   .reveal .col-8{grid-column:span 8}
+.reveal .col-9{grid-column:span 9}   .reveal .col-10{grid-column:span 10}
+.reveal .col-11{grid-column:span 11} .reveal .col-12{grid-column:span 12}
+
+.reveal .cols{ display:grid; grid-template-columns:1fr 1fr; gap:var(--col-gap); align-items:start }
+.reveal .cols.three{ grid-template-columns:1fr 1fr 1fr }
+.reveal .cols.four { grid-template-columns:1fr 1fr 1fr 1fr }
+.reveal .panel{ padding:.5em .8em }
+.reveal .panel h3{ margin:.1em 0 .3em; font-size:.95em; color:var(--accent); text-align:left }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   5. 컴포넌트 (Bootstrap 상당) — card · badge · alert · meter
+   ═══════════════════════════════════════════════════════════════════════
+   Bootstrap 을 로드하지 않고 필요한 것만 .reveal 스코프로 구현.
+   ⚠ Bootstrap 의 .progress 는 reveal 이 이미 쓰는 이름(하단 진행바)이라
+     충돌합니다. 여기서는 .meter 로 바꿔 놓았습니다.                       */
+.reveal .card{ border:1px solid var(--rule); border-radius:10px; background:var(--surface); overflow:hidden; text-align:left }
+.reveal .card-header{ background:var(--tint); border-bottom:1px solid var(--rule); padding:.45em .85em; font-weight:700; font-size:.92em; color:var(--accent) }
+.reveal .card-body{ padding:.6em .85em }
+.reveal .card-body>:first-child{ margin-top:0 }
+.reveal .card-body>:last-child { margin-bottom:0 }
+.reveal .card-footer{ background:var(--tint-soft); border-top:1px solid var(--rule-soft); padding:.35em .85em; font-size:.82em; color:var(--ink-soft) }
+.reveal .card.accent{ border-color:var(--accent); border-width:1.5px }
+
+.reveal .badge{ display:inline-block; font-size:.72em; font-weight:700; line-height:1; padding:.4em .65em; border-radius:6px; vertical-align:.12em; background:var(--rule-soft); color:var(--ink-soft); white-space:nowrap }
+.reveal .badge.pill   { border-radius:999px }
+.reveal .badge.primary{ background:var(--info-bg); color:var(--info-fg) }
+.reveal .badge.success{ background:var(--ok-bg); color:var(--ok-fg) }
+.reveal .badge.warn   { background:var(--warn-bg); color:var(--warn-fg) }
+.reveal .badge.danger { background:var(--danger-bg); color:var(--danger-fg) }
+
+/* ── callout ─────────────────────────────────────────────────────────
+   두 묶음입니다. 섞지 마세요.
+
+   (가) 심각도 — ANSI Z535 / ISO 3864 의 신호어 체계입니다. 색이 **등급**이라
+        아무 데나 쓰면 체계가 죽습니다.
+          danger 위험 · warning 경고 · caution 주의 · notice 공지 · safety 안전
+   (나) 종류 — 심각도가 아닌 것. 색을 안 쓰고 아이콘으로만 구분합니다.
+          todo · done · quote · question · tip
+
+     ::: {.callout .caution}
+     **주의** — 본문
+     :::
+
+   ⚠ 왜 베이스(.callout) + 수식자(.warning) 인가 — warn·danger·success 는
+     badge · meter 도 함께 쓰는 이름입니다. 수식자를 단독으로 쓰면
+     [warn]{.badge .warn} 이 배지이면서 동시에 상자가 됩니다.
+
+   아이콘 끄기
+     ::: {.callout .danger .noicon}      ← 상자 하나만
+     DECK.calloutIcons = false           ← 덱 전체 (html.callout-noicon)
+
+   아이콘 바꾸기 — --cal-icon 한 줄이면 됩니다.
+     .reveal .callout.tip{ --cal-icon:"\f0eb"; --cal-font:"Font Awesome 6 Free";
+                           --cal-weight:900 }      ← 전구
+
+   ⚠ 이모지(🚫 💡 🟢 ✅ ❗ ❓)는 기본값으로 쓰지 않았습니다. 그 코드포인트는
+     **컬러 전용**이라 CSS color 가 안 먹습니다 — 테마 색을 안 따르고,
+     플랫폼마다 모양이 다르고, 인쇄하면 혼자 총천연색으로 튑니다.
+     기본값은 전부 테마 색을 따르는 텍스트 글리프입니다.
+     \FE0E 는 "이모지 말고 글자로 그려라"는 표시(variation selector-15).
+
+   ⚠ safety 와 done 은 **같은 초록**입니다. 투사하면 초록 둘을 구분할 수 없어서
+     일부러 하나로 묶고 아이콘만 나눴습니다 (✚ 안전 / ✓ 완료).
+     둘 다 쓸 일이 없으면 done 만 쓰세요.                                   */
+.reveal .callout{
+  display:grid; grid-template-columns:max-content 1fr; align-items:start;
+  border-left:4px solid var(--cal-fg,var(--rule-strong));
+  border-radius:8px; background:var(--cal-bg,var(--tint));
+  color:var(--cal-tx,inherit);
+  padding:.55em .9em; text-align:left; margin:.4em 0;
+}
+/* ⚠ content:var(--cal-icon) 에 **폴백을 안 준 건 의도**입니다.
+   --cal-icon 이 없으면 var() 가 무효가 되고 content 는 normal 로 떨어져
+   ::before 가 **아예 안 생깁니다** → 첫 열 폭 0 → 민짜는 들여쓰기도 없음.
+   폴백 "" 을 주면 빈 상자가 생겨서 민짜에도 칸이 남습니다.               */
+.reveal .callout::before{
+  content:var(--cal-icon); grid-column:1; grid-row:1;
+  min-width:1em; padding-right:.55em; text-align:center;
+  font-family:var(--cal-font,inherit); font-weight:var(--cal-weight,700);
+  font-style:normal; line-height:1.45; opacity:.85;
+}
+.reveal .callout>*{ grid-column:2 }
+/* 상자 안에서는 왼쪽에 붙입니다. reveal 기본값이 전부 가운데로 밀어냅니다 —
+   pre 는 width:90%+margin:auto, 목록은 margin-left:1em, 표는 margin:auto.
+   상자 밖에서는 그 기본값이 맞으므로 .callout / .card-body 안에서만 끕니다.  */
+.reveal .callout table,      .reveal .card-body table,
+.reveal .callout blockquote, .reveal .card-body blockquote{ margin-left:0; margin-right:0 }
+.reveal .callout pre,        .reveal .card-body pre{ margin-left:0; margin-right:0; width:100% }
+.reveal .callout ul,         .reveal .card-body ul,
+.reveal .callout ol,         .reveal .card-body ol{ margin-left:0; padding-left:1.1em }
+.reveal .callout>:first-child{ margin-top:0 }
+.reveal .callout>:last-child { margin-bottom:0 }
+
+/* (가) 심각도 — 색이 등급입니다 ----------------------------------------- */
+.reveal .callout.danger{                       /* 위험 */
+  --cal-icon:"\2715";
+  --cal-fg:var(--danger-fg); --cal-bg:var(--danger-bg); --cal-tx:var(--danger-fg);
+}
+.reveal .callout.warning,
+.reveal .callout.warn{                         /* 경고 */
+  --cal-icon:"\26A0\FE0E";
+  --cal-fg:var(--warn-fg); --cal-bg:var(--warn-bg); --cal-tx:var(--warn-fg);
+}
+.reveal .callout.caution,
+.reveal .callout.important{                    /* 주의 */
+  --cal-icon:"!";
+  --cal-fg:var(--caution-line); --cal-bg:var(--caution-bg); --cal-tx:var(--caution-fg);
+}
+/* 노랑만 띠와 글자를 나눕니다 — 읽히는 노랑은 어두워서 올리브가 되고,
+   밝은 노랑은 글자로 못 씁니다. 띠는 밝게, 글자·아이콘은 어둡게.       */
+.reveal .callout.caution::before,
+.reveal .callout.important::before{ color:var(--caution-fg) }
+.reveal .callout.notice,
+.reveal .callout.info{                         /* 공지 */
+  --cal-icon:"\2139\FE0E";
+  --cal-fg:var(--info-fg); --cal-bg:var(--info-bg); --cal-tx:var(--info-fg);
+}
+.reveal .callout.safety{                       /* 안전 — ISO 안전표지의 십자 */
+  --cal-icon:"\271A";
+  --cal-fg:var(--ok-fg); --cal-bg:var(--ok-bg); --cal-tx:var(--ok-fg);
+}
+
+/* (나) 종류 — 색을 쓰지 않습니다. done 만 예외(초록) -------------------- */
+.reveal .callout.done,
+.reveal .callout.success{                      /* 완료 · 정답 */
+  --cal-icon:"\2713";
+  --cal-fg:var(--ok-fg); --cal-bg:var(--ok-bg); --cal-tx:var(--ok-fg);
+}
+.reveal .callout.todo    { --cal-icon:"\2610" }   /* 할 일  ☐ */
+.reveal .callout.question{ --cal-icon:"?" }       /* 질문      */
+.reveal .callout.quote   { --cal-icon:"\275D" }   /* 인용   ❝ */
+/* 요령 — 전구는 **텍스트 코드포인트가 없습니다.** 그래서 여기만 Font Awesome.
+   ⚠ index.html 의 Font Awesome <link> 두 줄을 지우면 이 줄도 되돌리세요.
+     안 되돌리면 두부(□)가 뜹니다. 대체값: --cal-icon:"\2726"  (✦)         */
+.reveal .callout.tip{
+  --cal-icon:"\f0eb"; --cal-font:"Font Awesome 7 Free"; --cal-weight:400;
+}
+.reveal .callout.todo::before,
+.reveal .callout.question::before,
+.reveal .callout.quote::before,
+.reveal .callout.tip::before{ color:var(--ink-soft) }
+
+/* 아이콘 끄기 — 수식자보다 뒤에 와야 이깁니다 (같은 특이도).
+   initial 은 custom property 의 **보장된 무효값**이라 var() 가 무효가 되고
+   ::before 자체가 안 생깁니다. "" 을 주면 빈 칸이 남습니다.             */
+.reveal .callout.noicon{ --cal-icon:initial }
+html.callout-noicon .reveal .callout{ --cal-icon:initial }
+
+/* 민짜 + 아이콘 — 수식자 없이 글리프만 얹는 쓰임. 색은 안 따라옵니다.
+     ::: {.callout style="--cal-icon:'\1F4A1'"}        한 번 쓸 때
+     .reveal .callout.bulb{ --cal-icon:"\1F4A1" }      자주 쓸 때          */
+
+.reveal .meter{ height:.6em; background:var(--track); border-radius:999px; overflow:hidden; margin:.3em 0 }
+.reveal .meter>p{ margin:0; height:100% }
+.reveal .meter span{ display:block; height:100%; background:var(--accent); border-radius:999px; transition:width .4s }
+.reveal .meter.lg{ height:1.5em }
+.reveal .meter.lg span{ color:var(--accent-ink); font-size:.62em; font-weight:700; line-height:2.4; text-align:right; padding-right:.7em; box-sizing:border-box }
+.reveal .meter span.success{ background:var(--ok-fg) }
+.reveal .meter span.warn   { background:var(--warn-fg) }
+.reveal .meter span.danger { background:var(--danger-fg) }
+
+/* ── ::: punch — 그 슬라이드의 핵심 한 문장 ──────────────────────────
+     ::: punch
+     그 서버는 지금 없습니다. 그리고 그렇게 지목한 문서도, 지금 안 열립니다.
+     :::
+
+   상자(callout)가 아니라 **선 하나 + 큰 글씨**입니다. 일부러 다르게 뒀습니다 —
+   핵심 문장은 슬라이드마다 하나씩 나오는데 그걸 전부 상자로 감싸면 상자가
+   의미를 잃습니다. callout 은 "이건 주의/출처/권장"처럼 **드물게** 쓰는 신호로
+   남겨 두세요.                                                            */
+.reveal .punch{
+  font-size:1.12em; font-weight:700; line-height:1.4; color:var(--ink);
+  border-left:4px solid var(--accent-2);
+  padding:.1em 0 .1em .7em;
+  margin:.7em 0 .5em;
+  text-align:left;
+}
+.reveal .punch > :first-child{ margin-top:0 }
+.reveal .punch > :last-child { margin-bottom:0 }
+.reveal section.divider .punch{ color:var(--divider-ink); border-color:var(--divider-dim) }
+
+/* ── ::: ref — 출처·근거를 footer 바로 위에 작게 ───────────────────────
+     ::: ref
+     1. 저작권법 제101조의3 제1항 제6호
+     2. Directive 2009/24/EC Art. 6
+     :::
+
+   섹션 안의 `.ref` 는 **내용만 담는 그릇**이고 화면에는 안 보입니다.
+   deck.js 가 그 내용을 .slides 바로 아래 오버레이(.deckref)로 옮겨 그립니다 —
+   chapnav·footer 와 같은 방식.
+
+   ⚠ 왜 이렇게까지 하나: 섹션은 높이가 auto 라 내용이 많으면 슬라이드(720px)보다
+     커집니다. ref 를 섹션 안에 absolute 로 두면 그 **커진 박스**의 바닥에 붙어
+     슬라이드 밖, footer 위로 내려갔습니다. {.fit} 을 걸어도 ref 자리를 비우려고
+     더한 패딩이 다시 박스를 키워서 순환이 났습니다.
+     오버레이는 슬라이드 박스에 붙으므로 내용 길이와 무관합니다.               */
+.reveal .slides section .ref{ display:none }      /* 그릇 — 화면에는 안 그림 */
+.reveal .ref-spacer{ flex:none }                  /* deck.js 가 높이를 넣습니다 */
+
+.reveal .deckref{
+  position:absolute;
+  left:var(--deck-pad-x); right:var(--deck-pad-x);
+  bottom:calc(var(--footer-h) * 1.2);
+  font-size:var(--ref-size); line-height:1.45; text-align:left;
+  color:var(--ink-soft); opacity:.78;
+  border-top:1px solid var(--rule); padding-top:.5em;
+  /* ⚠ auto 를 **명시해야** 합니다. pointer-events 는 상속되는 속성이고
+     reveal 의 .reveal .slides 가 none 이라, 안 쓰면 물려받아 **본문처럼
+     드래그 선택이 안 됩니다**(링크도 안 눌림).
+     ref 아래를 가릴 걱정은 없습니다 — deck.js 가 ref 높이만큼 .ref-spacer 로
+     자리를 비웁니다. 끄고 재보면 긴 슬라이드에서 10~45px 씩 겹칩니다. */
+  pointer-events:auto;
+  z-index:20;
+}
+.reveal .deckref p, .reveal .deckref li{ margin:.12em 0 }
+.reveal .deckref ol, .reveal .deckref ul{ margin:0; padding-left:1.6em; display:block }
+.reveal .deckref li::marker{ color:inherit }
+.reveal .deckref a{ color:inherit; text-decoration:underline; text-underline-offset:.15em }
+.reveal .deckref code{ font-size:.95em; background:none; padding:0; color:inherit }
+/* 짙은 간지 위에서는 색을 뒤집는다 */
+.reveal .deckref.on-divider{ color:var(--divider-dim); border-color:var(--divider-rule) }
+
+.reveal .pill{ font-family:monospace; font-size:.8em; font-weight:700; padding:.1em .6em; border-radius:999px; white-space:nowrap }
+.reveal .pill.ok  { background:var(--ok-bg); color:var(--ok-fg) }
+.reveal .pill.warn{ background:var(--warn-bg); color:var(--warn-fg) }
+.reveal .pill.todo{ background:var(--rule-soft); color:var(--ink-soft) }
+.reveal .muted{ color:var(--ink-soft); font-size:.9em }
+/* 키캡 — 번호를 키보드 자판처럼. 목록과 상세 슬라이드를 번호로 묶을 때.
+     ## [01]{.keycap} 도커를 올렸는데 ufw 로 막은 줄 압니다
+     | [01]{.keycap} | … |
+   ⚠ 이모지 키캡(1️⃣ 🔟)을 쓰지 않은 이유 — 컬러 전용이라 테마 색을 안 따르고
+     (회색 입체 그림으로 나옵니다), 🔟 은 1️⃣ 과 글자 크기·폭이 다릅니다.
+     이쪽은 두 자리여도 폭이 같고 인쇄도 테마 색 그대로입니다.          */
+.reveal .keycap{
+  display:inline-block; min-width:1.9em; text-align:center;
+  background:var(--accent); color:var(--accent-ink); border-radius:.28em;
+  font-family:var(--mono); font-weight:700; font-size:.78em;
+  padding:.06em .18em; line-height:1.45; vertical-align:.08em;
+}
+.reveal td .keycap, .reveal th .keycap{ font-size:.82em; min-width:1.8em }
+.reveal .keycap.soft{ background:var(--chip); color:var(--accent) }
+
+/* 키커 — 제목 옆/위의 작은 머리말. 간지뿐 아니라 본문 슬라이드에서도 씁니다.
+   「있었을 때 / 없을 때」처럼 **두 장이 한 쌍**이라는 걸 화면에 표시할 때.  */
+.reveal .kicker{ color:var(--ink-faint); font-family:var(--mono);
+  letter-spacing:.15em; font-size:.62em; margin:0 0 .3em }
+
+/* ── 글자색 유틸 — 아이콘에 상태색을 입힐 때 ────────────────────────────
+   []{.fa-solid .fa-link-slash .c-danger}
+   FA 는 태그를 가리지 않으므로 bracketed span 에 그대로 붙습니다.
+   크기는 FA 기본 클래스(fa-lg · fa-xl · fa-2x …)를 쓰면 됩니다.            */
+.reveal .c-accent{ color:var(--accent) }
+.reveal .c-dim   { color:var(--ink-soft) }
+.reveal .c-ok    { color:var(--ok-fg) }
+.reveal .c-warn  { color:var(--warn-fg) }
+.reveal .c-danger{ color:var(--danger-fg) }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   6. 간지 / 표지 (.bare — 상·하단 바와 종이판을 숨김)
+   ═══════════════════════════════════════════════════════════════════════
+   reveal 은 섹션의 class 를 .slide-background 로 그대로 복사합니다.
+   그래서 data-background-color 를 박지 않고 여기서 칠합니다 —
+   테마가 색을 가질 수 있고, {.divider} 를 직접 쓴 ## 슬라이드도 똑같이
+   칠해집니다(흰 글씨인데 배경이 흰 사고 방지).                            */
+.reveal .backgrounds .slide-background.divider{ background-color:var(--divider-bg) }
+.reveal section.divider{ text-align:left }
+.reveal section.divider h1, .reveal section.divider h2{ color:var(--divider-ink) }
+.reveal section.divider .kicker{ color:var(--divider-dim); font-size:.8em; margin-bottom:.4em }
+.reveal section.divider .lead{ color:var(--divider-soft); font-size:.95em; max-width:var(--measure) }
+/* 간지 안에서는 마크다운 `---` (hr) 도 .rule 과 같은 악센트 바가 된다.
+   → raw <hr class="rule"> 를 쓸 필요가 없다 */
+.reveal section.divider hr,
+.reveal section.divider .rule{ width:3.5em; height:4px; background:var(--accent-2); border:0; margin:.6em 0 .8em }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   7. 내용이 많을 때
+   ═══════════════════════════════════════════════════════════════════════
+   reveal 에는 "넘치면 글자를 줄이는" 기능이 없습니다.
+   `.r-fit-text` 가 있지만 그건 반대로 **폭에 꽉 차게 키우는** 것입니다.
+
+   ① 수동 4단계 — 요소(.column · ul · p · div)에 직접. 제목엔 걸지 말 것.
+   ② 슬라이드 통째로 자동 축소 — 제목에 {.fit}. deck.js 가 넘치는 만큼만
+      --fs-base 를 낮춥니다(최저 50%).
+   ③ 그래도 넘치면 {.scrollable} 로 스크롤.                                */
+.reveal .dense1, .reveal .smaller{ font-size:.9em; line-height:1.28 }
+.reveal .dense2{ font-size:.8em; line-height:1.26 }
+.reveal .dense3{ font-size:.7em; line-height:1.24 }
+.reveal .dense4{ font-size:.6em; line-height:1.20 }
+
+.reveal .slides section.scrollable{ overflow-y:auto; max-height:var(--slide-h) }
+
+/* ── 위·아래 첨자 ─────────────────────────────────────────────────────
+   크기는 그 자리 글자의 절반(--supsub-size), 줄 간격은 그대로.
+
+   브라우저 기본값은 vertical-align:super/sub 인데, 첨자가 커지면 줄 상자를
+   밀어 올려 그 줄만 간격이 벌어집니다. 실측(본문 42px 기준 문단 높이):
+
+     첨자 크기   super(기본)   top/bottom(이것)
+     .4~.6em        44px           44px
+     .8em           50px           44px      ← 기본값은 여기서부터 벌어짐
+     1em            56px           44px
+
+   .5em 에서는 둘 다 안 벌어지지만, 크기를 키워도 안 깨지도록
+   top/bottom 으로 둡니다.                                                */
+.reveal sup, .reveal sub{ font-size:var(--supsub-size) }
+.reveal sup{ vertical-align:top }
+.reveal sub{ vertical-align:bottom }
+
+/* ── 줄바꿈 다듬기 ─────────────────────────────────────────────────────
+   ⚠ text-wrap:balance 는 **어디에도 기본으로 걸지 않습니다.**
+     balance 는 단어 경계에서만 줄을 나누는데 한글은 그 경계가 드물어,
+     줄 길이를 맞추려다 어색한 데서 끊습니다. 제목도 예외가 아닙니다.
+     한 덩어리로 읽혀야 하는 자리일수록 티가 납니다.
+     **손으로 끊는 게 낫습니다** — 줄 끝에 백슬래시(\) 또는 공백 두 칸.
+     그래도 쓰고 싶은 자리에만 [..]{.balance} 로.
+   (Chrome/Edge 114 · Firefox 121 · Safari 17.5 부터. 비용 때문에 6줄 이하만) */
+.reveal .balance{ text-wrap:balance }
+/* 문단 끝에 단어 하나만 남는 것(고아) 방지 — 본문용 */
+.reveal .pretty{ text-wrap:pretty }

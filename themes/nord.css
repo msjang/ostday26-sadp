@@ -1,0 +1,56 @@
+/*! deck-theme
+name: 노드 — 어두운 바탕. 조명 어두운 큰 홀·저녁 발표에
+fonts: Pretendard Variable (SIL OFL 1.1)
+source: Nord (Arctic Ice Studio / Sven Greb) — nord0~15 를 그대로 가져왔습니다
+license: MIT (팔레트) · OFL-1.1 (글꼴)
+url: https://www.nordtheme.com/docs/colors-and-palettes
+*/
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+
+:root{
+  --sans:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo",
+         "Noto Sans KR",system-ui,sans-serif;
+  --serif:"Noto Serif KR",Georgia,serif;
+  --mono:"D2Coding",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;  /* D2Coding 먼저 — 한글 열 맞춤 */
+  --body-font:var(--sans);
+  --head-font:var(--sans);
+
+  /* Polar Night nord0~3 · Snow Storm nord4~6 · Frost nord7~10 · Aurora nord11~15 */
+  --bg:#242933;            /* nord0 보다 한 단계 더 어둡게 */
+  --surface:#2e3440;       /* nord0 */
+  --tint:#3b4252;          /* nord1 */
+  --tint-soft:#353c4a;
+  --chip:#3b4252;          /* nord1 */
+  --code-bg:#272c36;
+  --track:#434c5e;         /* nord2 */
+
+  --ink:#eceff4;           /* nord6 */
+  --ink-soft:#d8dee9;      /* nord4 */
+  --ink-faint:#8b96a8;
+
+  --rule:#434c5e;          /* nord2 */
+  --rule-soft:#3b4252;     /* nord1 */
+  --rule-strong:#4c566a;   /* nord3 */
+
+  --accent:#88c0d0;        /* nord8 — Frost */
+  --accent-ink:#2e3440;    /* nord0 */
+
+  --divider-bg:#242933;
+  --divider-ink:#eceff4;   /* nord6 */
+  --divider-soft:#d8dee9;  /* nord4 */
+  --divider-dim:#8fbcbb;   /* nord7 */
+  --divider-rule:rgba(216,222,233,.18);
+
+  /* Aurora */
+  --ok-fg:#a3be8c;     --ok-bg:#3a4436;      /* nord14 */
+  --warn-fg:#ebcb8b;   --warn-bg:#46412f;    /* nord13 */
+  --danger-fg:#bf616a; --danger-bg:#463134;  /* nord11 */
+  --info-fg:#81a1c1;   --info-bg:#333c4a;    /* nord9  */
+}
+
+/* 어두운 테마에서는 종이 그림자가 보이지 않습니다 — 테두리로 대신 */
+html.paper .reveal .deck-paper{
+  box-shadow:none; outline:1px solid var(--rule);
+}
+/* 흰 바탕을 전제한 reveal 기본 선택 색 보정 */
+.reveal ::selection{ background:var(--accent); color:var(--accent-ink) }

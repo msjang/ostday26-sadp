@@ -1,0 +1,54 @@
+/*! deck-theme
+name: 카본 — 기관·학술 발표. 각지고 높은 대비
+fonts: IBM Plex Sans KR · IBM Plex Mono (SIL OFL 1.1)
+source: IBM Carbon Design System — 색 토큰을 @carbon/colors 에서 그대로 가져왔습니다
+license: Apache-2.0 (팔레트) · OFL-1.1 (글꼴)
+url: https://carbondesignsystem.com/elements/color/overview/
+*/
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap");
+
+:root{
+  --sans:"IBM Plex Sans KR","IBM Plex Sans","Pretendard",
+         "Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  --serif:"Noto Serif KR",Georgia,serif;
+  --mono:"D2Coding",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;  /* D2Coding 먼저 — 한글 열 맞춤 */
+  --body-font:var(--sans);
+  --head-font:var(--sans);
+
+  /* gray 10/20/30/50/60/70/100 · blue 60 — @carbon/colors */
+  --bg:#6f6f6f;            /* gray60 */
+  --surface:#ffffff;
+  --tint:#f4f4f4;          /* gray10 */
+  --tint-soft:#f4f4f4;
+  --chip:#edf5ff;          /* blue10 */
+  --code-bg:#f4f4f4;       /* gray10 */
+  --track:#e0e0e0;         /* gray20 */
+
+  --ink:#161616;           /* gray100 */
+  --ink-soft:#525252;      /* gray70 */
+  --ink-faint:#8d8d8d;     /* gray50 */
+
+  --rule:#c6c6c6;          /* gray30 */
+  --rule-soft:#e0e0e0;     /* gray20 */
+  --rule-strong:#8d8d8d;   /* gray50 */
+
+  --accent:#0f62fe;        /* blue60 — Carbon 의 인터랙티브 색 */
+  --accent-ink:#ffffff;
+
+  --divider-bg:#161616;    /* gray100 */
+  --divider-ink:#ffffff;
+  --divider-soft:#e0e0e0;  /* gray20 */
+  --divider-dim:#c6c6c6;   /* gray30 */
+  --divider-rule:rgba(255,255,255,.22);
+
+  /* 의미색은 deck.css 의 엔진 기본값을 씁니다 — 테마를 바꿔도 뜻이 안 움직이게 */
+
+  /* Carbon 은 모서리를 거의 안 굴립니다 */
+  --radius:0px;
+}
+.reveal .card,
+.reveal .alert,
+.reveal .meter,
+.reveal .meter span{ border-radius:var(--radius) }
+.reveal .badge{ border-radius:2px }
+.reveal code:not(pre code){ border-radius:2px }
