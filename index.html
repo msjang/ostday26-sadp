@@ -1452,14 +1452,49 @@ iam.부서.example.kr — authentik    (기관엔 SP, 앱엔 IdP)
 
 ## 제가 지어낸 접근이 아닙니다 — Trusted CI {.fit}
 
-* **2012년부터 14년째, 끊긴 적이 없습니다** — NSF 과제 **네 건** <sup>[1234408](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1234408) · [1547272](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1547272) · [1920430](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1920430) · [2241313](https://www.nsf.gov/awardsearch/showAward?AWD_ID=2241313)</sup> 이 이어졌고, 2024년 갱신으로 **연 600만 달러<sup>약 80억</sup> · 2029. 9.까지** 확정
 * 미국 **NSF 사이버보안 우수센터** <sup>NSF Cybersecurity Center of Excellence</sup> 수행
+* 2012년부터 **14년째 진행중** <sup>NSF [1234408](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1234408) · [1547272](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1547272) · [1920430](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1920430) · [2241313](https://www.nsf.gov/awardsearch/showAward?AWD_ID=2241313)</sup> (연 600만 달러 <sup>약 80억</sup> 규모)
 * 연구 인프라 및 관련 오픈소스 프로젝트에 **1:1 로 붙어서** 보안을 강화
+    - [Jupyter(2021)](https://blog.jupyter.org/posts/2021/trusted-ci-cybersecurity-engagement-with-jupyter/): 보안 문서 공백 조사 + 배포 유형별 모범사례 작성
+    - [Tapis(2024)](https://doi.org/10.5281/zenodo.10903502): 코드 수준 보안 점검 — **심각한 취약점 4건 + 버그 1건** 발견, 개발팀이 반영
+    - [하와이 Gemini 천문대(2015~2016)](https://scholarworks.iu.edu/iuswrrest/api/core/bitstreams/7022683e-79f5-4bf5-936e-1f19169d675f/content): 천문대 데이터 무결성 확보를 위한 보안 로드맵 수립 + 우선순위 평가지표(Water line) 도입 및 사용자 보안 교육 실시
+    - [시카고 Array of Things 실험(2016)](https://scholarworks.iu.edu/iuswrrest/api/core/bitstreams/8d12805b-5452-429b-8cf2-602a197afef5/content): 도시 센서 네트워크의 보안·개인정보 보호 정책 검토 + 대중 소통 및 투명성 확보 지원
 
+::: notes
+그리고 이거, 제가 지어낸 접근이 아니에요.
+
+미국에 Trusted CI 라고 NSF 사이버보안 우수센터가 있어요.
+2012년에 시작해서 14년째고요, 연 600만 달러니까 한 80억쯤 됩니다.
+연구 인프라랑 오픈소스 프로젝트에 1:1 로 붙어서 같이 고쳐 줘요.
+
+몇 개만 보시면요.
+Jupyter 는 보안 문서가 어디에 비었는지 전수 조사하고,
+배포 유형별로 — 슈퍼컴센터용, 캠퍼스 클러스터용 — 모범사례를 써 줬어요.
+Tapis 는 코드를 들여다봐서 심각한 취약점 네 건이랑 버그 하나를 찾아냈고요.
+천문대도 붙었어요. 하와이 제미니 천문대. 로드맵 세우고 교육까지 했습니다.
+시카고 Array of Things 는 도시 센서망인데, 보안뿐 아니라
+개인정보랑 대중 소통까지 같이 봤어요.
+
+- **시설이 붙는다는 게 핵심이다.** 소프트웨어만 나열하면 「개발 얘기」로 들리는데
+  **천문대 · 도시 센서망**이 붙으면 **우리 얘기**가 된다
+- ⚠ **EPICS · RTEMS 가 화면에서 빠졌다**(2023. 1. 웨비나). 1부 **「고립이 면죄부입니다」**
+  회수에 쓰던 카드다. 말로라도 한 번 넣을 것 —
+  **「웨비나에는 EPICS 도 있습니다. 가속기 제어 시스템이요.
+  아까 계측 게이트웨이 붙이면 소명서 매년 새로 쓴다고 했죠? 저쪽은 공개 세미나로 다룹니다」**
+- ⚠ **TransPAC 도 화면에서 빠졌다** — 미국–아시아태평양 **연구망** 연결 사업이라
+  이 방에서 남 얘기가 아니다. 둘 다 **출처 장에는 남아 있다**
+- Array of Things 에서 **개인정보·대중 소통**까지 봤다는 대목을 흘리지 말 것 —
+  보안을 「막는 일」이 아니라 **「같이 설명하는 일」**로 다룬 사례다
+:::
+
+
+
+## 제가 지어낸 접근이 아닙니다 — Trusted CI {.fit}
 
 ::: {.callout .quote}
-[**Framework**](https://zenodo.org/record/4562447/files/The%20Trusted%20CI%20Framework%20Implementation%20Guide%20v1.0.pdf) \
-기존의 단편적 통제 지침에서 벗어나, 조직 고유의 미션에 최적화된 방식으로 사이버 보안을 지속 가능하고 체계적으로 실행하도록 돕는 프레임워크
+[**Framework**](https://doi.org/10.5281/zenodo.4562447) \
+기존의 단편적 통제 지침에서 벗어나, \
+조직 고유의 미션에 최적화된 방식으로 사이버 보안을 지속 가능하고 체계적으로 실행하도록 돕는 프레임워크
 :::
 
 ::: {.callout .quote}
@@ -1468,31 +1503,26 @@ iam.부서.example.kr — authentik    (기관엔 SP, 앱엔 IdP)
 
 | Asset 자산 | Concern 무슨 일이 | Consequence 그래서 무엇을 잃나 |
 |---|---|---|
-| Documentation (wiki) | **Inaccessible** | **Lost science time** |
-| **Sensor control system**<br>network infrastructure | **Inaccessible network** | Lost science time, **affecting unrelated<br>projects at the same facility** |
+| Documentation (wiki) | Inaccessible | Lost science time |
+| Network-connected <br>sensor control system | **Inaccessible network**<br>(flooding attack) | Lost science time, <br>affecting unrelated projects at the same facility |
 | Internal data | Data exposed | Reduced reputation · legal action |
 
-**과학자들(working group)이 만들어 올렸습니다. 위에서 내려온 게 아닙니다** — 지금도 **GitHub 이슈로 누구나 문제를 제기**합니다
+**과학자들(working group)이 만들어 올렸습니다. 위에서 내려온 게 아닙니다** — 누구나 **GitHub 으로 문제를 제기**합니다
 
 :::
 
-**소프트웨어** Project Jupyter(2021) · Singularity(2019, 현 Apptainer) · Globus(2015) · Pegasus · perfSONAR · Tapis \
-**시설 · 망** **Gemini 천문대** · **연구선단**(Academic Research Fleet) · **TransPAC**(미국–아시아태평양 연구망) · FABRIC · Chicago Array of Things \
-**웨비나**(2016~2025) **EPICS · RTEMS** — **가속기 · 대형 실험장치 제어 시스템**
+
+
 
 ::: punch
-**개방을 깨지 않는 보안**은 이미 하나의 분야입니다. \
-**우리는 그 가이드가 없습니다** — 그래서 2부를 만든 겁니다
+**개방을 깨지 않는 보안**은 이미 하나의 분야입니다. **우리는 그 가이드가 없습니다**
 :::
 
+
 ::: notes
-그리고 이거, 제가 지어낸 접근이 아니에요.
+이 센터가 내놓은 게 둘 있는데, 이게 핵심이에요.
 
-미국에 Trusted CI 라고 NSF 사이버보안 우수센터가 있어요.
-2012년에 시작해서 14년째고요, 지금은 연 600만 달러씩 2029년까지 확정이에요.
-연구 인프라 프로젝트에 1:1 로 붙어서 같이 고쳐 줍니다.
-
-여기가 Framework 이라는 걸 내놨는데, 만든 이유를 이렇게 밝혀요.
+Framework 이라는 걸 내놨는데, 만든 이유를 이렇게 밝혀요.
 「통제 항목에만 좁게 집중한 지침이 넘쳐나서」 만들었다.
 무슨 말이냐면 — **시킬 거리는 많은데, 누가 정하고 돈은 어디서 나오는지는 아무도 안 쓴다**는 거에요.
 그래서 기둥을 네 개로 뒀어요. 사명, 거버넌스, 자원, 그리고 통제.
@@ -1517,18 +1547,6 @@ working group 이 만들어서 올린 거에요. 위에서 내려온 게 아니�
 지금도 GitHub 에 올려두고 「문제 있으면 이슈 남기세요」 합니다.
 쓰는 사람들이 지침을 같이 고치는 거죠.
 
-붙은 걸 보면요.
-소프트웨어는 Jupyter, Singularity — 지금 Apptainer죠, Globus, perfSONAR.
-시설도 붙어요. 제미니 천문대, 연구선단, 그리고 TransPAC —
-이건 미국이랑 아시아태평양 연구망 잇는 사업이에요. 남 얘기가 아니죠.
-웨비나에는 EPICS 랑 RTEMS 도 있어요. 가속기 제어 시스템이요.
-
-- **TransPAC 을 흘리지 말 것** — 미국–아시아태평양 **연구망** 연결 사업이다.
-  이 방에서 남 얘기가 아니고, 「연구망도 저기 붙는다」가 된다
-- **Gemini 천문대 · 연구선단 · Chicago Array of Things** 가 대형 연구시설·계측 쪽이다.
-  소프트웨어만 나열하면 「개발 얘기」로 들리는데, 시설이 붙으면 **우리 얘기**가 된다
-- ⚠ **EPICS 에서 1부를 회수할 것** — 「아까 계측 게이트웨이 붙이면 소명서 매년 새로
-  쓴다고 했죠? 저쪽은 그걸 공개 세미나로 다룹니다」. 이 대비가 제일 아프다
 - **「시어머니만 많다」가 Framework 인용의 풀이다.** 5부 54 「시어머니 둘 —
   국정원·감사원」과 같은 말이라 거기서 메아리가 난다. 다만 그 단어는 5부에서 쓸 것
 - ⚠⚠ **이 표가 1부 「감사의 비대칭」을 받쳐 준다. 다만 선을 정확히 지킬 것.**
