@@ -1452,29 +1452,29 @@ iam.부서.example.kr — authentik    (기관엔 SP, 앱엔 IdP)
 
 ## 제가 지어낸 접근이 아닙니다 — Trusted CI {.fit}
 
-Trusted CI
+* **2012년부터 14년째, 끊긴 적이 없습니다** — NSF 과제 **네 건**이 이어졌고
+  (<sup>[1234408](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1234408) · [1547272](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1547272) · [1920430](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1920430) · [2241313](https://www.nsf.gov/awardsearch/showAward?AWD_ID=2241313)</sup>),
+  2024년 갱신으로 **연 600만 달러<sup>약 80억</sup> · 2029. 9.까지** 확정
+* 미국 **NSF 사이버보안 우수센터** <sup>NSF Cybersecurity Center of Excellence</sup> 수행
+* 연구 인프라 및 관련 오픈소스 프로젝트에 **1:1 로 붙어서** 보안을 강화
 
-* 미국 **NSF 사이버보안 우수센터** <sup>NSF Cybersecurity Center of Excellence</sup>
-* 14년째 운영중 (2012 ~ 2029)
-
-
-**년부터 14년째**, 지금은 **연 600만 달러 · 2029년까지** 확정.
-연구 인프라 프로젝트에 **1:1 로 붙어서** 같이 고칩니다
 
 ::: {.callout .quote}
-**Framework 를 왜 만들었나** — *"In response to an abundance of guidance focused narrowly on
-cybersecurity **controls** …"* \
-**시킬 항목만 늘어놓은 지침은 넘치는데, 「누가 정하고 돈은 어디서 나오나」는 아무도 안 씁니다.**
-그래서 네 기둥이 **사명 · 거버넌스 · 자원 · 통제** 입니다 — 통제는 그중 **하나**일 뿐입니다
+[**Framework**](https://zenodo.org/record/4562447/files/The%20Trusted%20CI%20Framework%20Implementation%20Guide%20v1.0.pdf) \
+기존의 단편적 통제 지침에서 벗어나, 조직 고유의 미션에 최적화된 방식으로 사이버 보안을 지속 가능하고 체계적으로 실행하도록 돕는 프레임워크
 :::
 
 ::: {.callout .quote}
-**OSCRP 는 무엇을 하나** — *"bridge the **communication gap** between scientists and IT security
-professionals"* · *"**not** concerned about threat actors or specific attack methods, but
-**what assets** … **what harms** … **what impacts**"* \
-보안을 올리면 **당신 연구의 위험이 준다**를 보여주는 문서입니다. \
-**working group 이 만들어 올린 겁니다. 위에서 내려온 게 아닙니다** —
-지금도 **GitHub 이슈로 누구나 문제를 제기**합니다
+[**OSCRP**](https://trustedci.github.io/OSCRP/) — Open Science Cyber Risk Profile \
+공격자나 수법이 아니라, **자원을 잃으면 무엇을 못 하게 되는가**로 적은 문서
+
+| Asset 자산 | Concern 무슨 일이 | Consequence 그래서 무엇을 잃나 |
+|---|---|---|
+| Documentation (wiki) | **Inaccessible** | **Lost science time** |
+| Internal data | Data exposed | Reduced reputation · legal action |
+
+**working group 이 만들어 올렸습니다. 위에서 내려온 게 아닙니다** — 지금도 **GitHub 이슈로 누구나 문제를 제기**합니다
+
 :::
 
 **소프트웨어** Project Jupyter(2021) · Singularity(2019, 현 Apptainer) · Globus(2015) · Pegasus · perfSONAR · Tapis \
@@ -1548,7 +1548,7 @@ working group 이 만들어서 올린 거에요. 위에서 내려온 게 아니�
 
 | | |
 |---|---|
-| **센터** | [trustedci.org](https://www.trustedci.org/) · 2012 **CTSC** 로 시작(NSF ACI-**1234408**) · 2016 CCoE 지정(ACI-**1547272**, 500만 달러) · OAC-**1920430** · OAC-**2241313**<br>[2024 갱신 **연 600만 달러 · 2029. 9.까지**](https://cs.lbl.gov/news-and-events/news/2024/cybersecurity-center-of-excellence-receives-five-year-6m-year-award-from-nsf/) — 중심 기관 Lawrence Berkeley National Laboratory *(Berkeley Lab 발표, 2024)* |
+| **센터** | [trustedci.org](https://www.trustedci.org/) — NSF 과제 네 건이 이어졌습니다 *(기간·금액은 NSF 과제원장 실측)*<br>[**1234408**](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1234408) 2012. 10. – 2016. 9. · 430만 달러 · Indiana Univ. *(PI Von Welch)* — 당시 이름 **CTSC**<br>[**1547272**](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1547272) 2016. 1. – 2021. 6. · 500만 달러 — **CCoE 지정**<br>[**1920430**](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1920430) 2019. 10. – 2022. 9. · 1,249만 달러<br>[**2241313**](https://www.nsf.gov/awardsearch/showAward?AWD_ID=2241313) 2022. 9. – 2024. 12. · 1,249만 달러 · Univ. of Illinois *(PI James Basney)*<br>[2024 갱신 — **연 600만 달러 · 2029. 9.까지**](https://cs.lbl.gov/news-and-events/news/2024/cybersecurity-center-of-excellence-receives-five-year-6m-year-award-from-nsf/), 중심 기관 **Lawrence Berkeley National Laboratory** *(Berkeley Lab 발표, 2024 · 과제번호는 미공개)* |
 | **Framework** | [Framework Core — 4 Pillars · 16 Musts](https://www.trustedci.org/framework/core) |
 | **OSCRP** | [trustedci.org/oscrp](https://www.trustedci.org/oscrp) *(× DOE ESnet)* · [github.com/trustedci/OSCRP](https://github.com/trustedci/OSCRP) *(이슈로 의견 접수)* · [IEEE S&P 2017 — doi.org/10.1109/MSP.2017.3681058](https://doi.org/10.1109/MSP.2017.3681058)<br>2017년 문서, 공개 저장소 최종 갱신 **2021** |
 | **협력 근거** | [Project Jupyter 2021](https://blog.trustedci.org/2021/08/engagement-with-jupyter.html) *보안 문서 공백 조사 + 배포 유형별 모범사례 작성* ([Jupyter 측 기록](https://blog.jupyter.org/posts/2021/trusted-ci-cybersecurity-engagement-with-jupyter/)) · [Singularity 2019~20](https://blog.trustedci.org/2020/04/singularity-report.html) *Sylabs·Open Science Grid 와 보안 평가* · [Globus 2015](https://blog.trustedci.org/2015/01/globus-and-ctsc-engagement-data-sharing.html) · [Pegasus · perfSONAR · Tapis](https://www.trustedci.org/software-assurance) |
