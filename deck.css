@@ -575,11 +575,16 @@ html.callout-noicon .reveal .callout{ --cal-icon:initial }
    그래서 data-background-color 를 박지 않고 여기서 칠합니다 —
    테마가 색을 가질 수 있고, {.divider} 를 직접 쓴 ## 슬라이드도 똑같이
    칠해집니다(흰 글씨인데 배경이 흰 사고 방지).                            */
-.reveal .backgrounds .slide-background.divider{ background-color:var(--divider-bg) }
+/* ⚠ 배경을 .slide-background **한 군데에만** 걸면, 그 레이어가 죽는 환경에서
+   흰 바탕에 흰 글씨가 됩니다(모바일 브라우저의 고대비·다크 모드, 일부 리더 뷰).
+   섹션에도 같이 칠해 두 겹으로 막습니다. 변수에도 하드 폴백을 둡니다 —
+   테마 CSS 가 안 실리면 var() 가 무효가 되어 배경이 통째로 날아갑니다. */
+.reveal .backgrounds .slide-background.divider,
+.reveal section.divider{ background-color:var(--divider-bg,#102746) }
 .reveal section.divider{ text-align:left }
-.reveal section.divider h1, .reveal section.divider h2{ color:var(--divider-ink) }
-.reveal section.divider .kicker{ color:var(--divider-dim); font-size:.8em; margin-bottom:.4em }
-.reveal section.divider .lead{ color:var(--divider-soft); font-size:.95em; max-width:var(--measure) }
+.reveal section.divider h1, .reveal section.divider h2{ color:var(--divider-ink,#fff) }
+.reveal section.divider .kicker{ color:var(--divider-dim,#e8701a); font-size:.8em; margin-bottom:.4em }
+.reveal section.divider .lead{ color:var(--divider-soft,#c9d8ec); font-size:.95em; max-width:var(--measure) }
 /* 간지 안에서는 마크다운 `---` (hr) 도 .rule 과 같은 악센트 바가 된다.
    → raw <hr class="rule"> 를 쓸 필요가 없다 */
 .reveal section.divider hr,
