@@ -1598,7 +1598,7 @@ working group 이 만들어서 올린 거에요. 위에서 내려온 게 아니�
 | 침입을 막습니다 | 공격자가 **목적지를 임의로 고를 수 없습니다** |
 | 탈취물이 못 나갑니다 | 앱마다 데이터 접근권한을 좁힙니다 |
 | 앱이 안전합니다 | 침해된 앱을 격리하고 복구할 수 있습니다 |
-| 전부 **추적됩니다** | *(필요한 경우)* 요청마다 **누가**가 로그에 남습니다.<br>caddy `log_append auth_sub {http.request.header.X-Auth-Request-User}` |
+| 전부 **추적됩니다** | *(필요한 경우)* 요청마다 **누가**가 로그에 남습니다.<br><small>caddy log_append auth_sub {http.request.header.X-Auth-Request-User}</small> |
 
 ::: {.callout}
 익명 대량 유출을, 신원이 붙는 유출로 바꿨습니다
