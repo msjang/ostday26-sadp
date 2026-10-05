@@ -455,12 +455,6 @@
       // ⚠ nav.querySelectorAll('a') 로 잡으면 안 됩니다 — 제목도 <a> 라서
       //   인덱스가 한 칸 밀리고 활성 표시가 제목에 찍힙니다.
       b.links.forEach((a, k) => a.classList.toggle('on', k === active));
-      // 좁은 화면(세로 폰)에서는 chapnav 가 슬라이드와 함께 축소돼 안 읽힙니다.
-      // .reveal 은 transform 이 없으므로 그 바깥에 실제 크기로 띄울 수 있게
-      // 값만 CSS 변수로 내보냅니다. 그리는 건 deck.css 의 미디어 쿼리가 합니다.
-      const rs = document.documentElement.style;
-      rs.setProperty('--now-title', JSON.stringify(m.title || ''));
-      rs.setProperty('--now-chap',  JSON.stringify(active >= 0 ? chapters[active].title : ''));
     }
     if (b.foot) b.foot.querySelector('.pageno').textContent = (i + 1) + ' / ' + sections.length;
   }
