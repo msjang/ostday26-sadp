@@ -561,8 +561,12 @@ html.callout-noicon .reveal .callout{ --cal-icon:initial }
 
 /* 키커 — 제목 옆/위의 작은 머리말. 간지뿐 아니라 본문 슬라이드에서도 씁니다.
    「있었을 때 / 없을 때」처럼 **두 장이 한 쌍**이라는 걸 화면에 표시할 때.  */
-.reveal .kicker{ color:var(--ink-faint); font-family:var(--mono);
-  letter-spacing:.15em; font-size:.62em; margin:0 0 .3em }
+/* 키커 — 한글 문장도 들어오므로 기본은 본문 글꼴입니다.
+   고정폭은 간지의 시간 표기(0:00 — 0:10)처럼 숫자가 줄맞춤돼야 하는 자리에만.
+   ⚠ 여기에 var(--mono) 를 걸면 한글이 전각으로 벌어져
+     「아 까  그  공 지 로」 처럼 보입니다. */
+.reveal .kicker{ color:var(--ink-faint);
+  letter-spacing:.04em; font-size:.62em; margin:0 0 .3em }
 
 /* ── 글자색 유틸 — 아이콘에 상태색을 입힐 때 ────────────────────────────
    []{.fa-solid .fa-link-slash .c-danger}
@@ -589,7 +593,7 @@ html.callout-noicon .reveal .callout{ --cal-icon:initial }
 .reveal section.divider{ background-color:var(--divider-bg,#102746) }
 .reveal section.divider{ text-align:left }
 .reveal section.divider h1, .reveal section.divider h2{ color:var(--divider-ink,#fff) }
-.reveal section.divider .kicker{ color:var(--divider-dim,#e8701a); font-size:.8em; margin-bottom:.4em }
+.reveal section.divider .kicker{ color:var(--divider-dim,#e8701a); font-family:var(--mono); letter-spacing:.15em; font-size:.8em; margin-bottom:.4em }
 .reveal section.divider .lead{ color:var(--divider-soft,#c9d8ec); font-size:.95em; max-width:var(--measure) }
 /* 간지 안에서는 마크다운 `---` (hr) 도 .rule 과 같은 악센트 바가 된다.
    → raw <hr class="rule"> 를 쓸 필요가 없다 */
