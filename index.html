@@ -1401,46 +1401,17 @@ iam.부서.example.kr — authentik    (기관엔 SP, 앱엔 IdP)
 열 개 보셨죠. **매번 하실 겁니까?**
 :::
 
+<!--
 「**Git 저장소만 올리면** 로그인, IP 접근제어, HTTPS가 붙고,
 공급망으로 악성 코드가 들어와도 **데이터는 나가지 못하며**,
 **모든 변경이 기록**되는 SADP를 소개합니다」
-
-*세션 소개에 제가 쓴 문장입니다. 이걸 약속했습니다*
+-->
 
 ::: notes
 2부에서 놓치기 쉬운 것들 보셨잖아요?
 실수하기 쉽고, 고려할 게 너무 많아요.
 저는 10년 했는데 아직도 틀립니다.
-
-그럼 하지 말라고 할까요? 아니죠. 일이 되게 해야 하잖아요.
-
-지금 상황이 이래요.
-바깥 서비스는 못 쓰게 막혀 있고, 그러면서 협업도 같이 막히고 있어요.
-오픈소스는 더 많이 들여와야 하는데 들여올 길이 좁고요.
-바이브코딩으로 만든 앱은 점점 늘어나는데, 그거 믿을 수 있냐 하면 또 아니에요.
-만든 본인도 코드를 다 설명 못 하거든요.
-
-그렇다고 하나하나 다 검토 받으라고 하면 사람들 학을 뗍니다.
-안 하거나, 숨기거나 둘 중 하나에요.
-
-그래서 필요한 게 적정기술이에요.
-신경 안 쓰게 하면서도 안전한 거.
-
-(공고문 읽고) 세션 소개에 제가 쓴 문장입니다. 제가 이걸 약속했어요.
-
-- **공고문이 그대로 3부 대본이다.** 청중은 이 문장을 보고 등록했으니 이미 머릿속에 있다.
-  네 약속이 통제 지점과 1:1 이다 — 로그인·IP·HTTPS=입구 / 못 나감=출구+빌드 / 기록=기록
-- 네 가지 **다 선다.** 단서 달 필요 없다. 바로 다음 장이 「먼저, 한계부터」라
-  순서가 **약속 → 한계** 가 되고, 그래서 영업이 아니라 **보고**로 들린다
-- 「열 개 보셨죠」는 **17번(유별난 한 명이 10년간)의 회수**다. 내가 10년 손으로 한 걸
-  상자가 기본값으로 주자는 것
-- ⚠ 2부를 주마간산으로 가셨어도 이 전환은 선다. 번호를 짚지 말고 **「열 개」**로만 말할 것
-- **「적정기술」은 1부 14 에서 이미 꺼낸 단어다.** 여기서 회수하는 것 — 금지도 아니고
-  수억짜리 사업도 아닌 빈칸을 2·3부가 메운다는 얘기였다
-- 체인의 끝(**「신경 안 쓰게 하면서도 안전하게」**)이 공고문의 「Git 저장소만 올리면」과
-  **같은 말**이다. 그래서 바로 공고문으로 넘어간다
-- ⚠ 여기서 30~40초 쓴다. 3분 중 가장 긴 호흡이고, 그래도 쓸 값어치가 있다 —
-  **이 체인이 없으면 3부가 그냥 제품 소개로 들린다**
+어떻게 해야 할가요?
 :::
 
 
@@ -1455,12 +1426,12 @@ iam.부서.example.kr — authentik    (기관엔 SP, 앱엔 IdP)
 - 바이브코딩 앱은 **늘어나는데** — **만든 본인도 코드를 다 설명하지 못합니다**
 
 ::: {.callout .danger}
-그렇다고 **하나하나 검토 받으라고** 하면 — **학을 뗍니다.**
+그렇다고 **하나하나 검토 받으라고** 하면 **학을 뗍니다.** \
 안 하거나, 숨기거나 둘 중 하나입니다
 :::
 
 ::: punch
-금지도 아니고, 수억짜리 사업도 아닌 것 — **적정기술**입니다
+금지도 아니고, 수억짜리 사업도 아닌 것 — `적정기술`이 필요합니다.
 :::
 
 ::: notes
@@ -1470,128 +1441,115 @@ iam.부서.example.kr — authentik    (기관엔 SP, 앱엔 IdP)
 지금 상황이 이래요.
 바깥 서비스는 못 쓰게 막혀 있고, 그러면서 협업도 같이 막히고 있어요.
 오픈소스는 더 많이 들여와야 하는데 들여올 길이 좁고요.
-바이브코딩으로 만든 앱은 점점 늘어나는데, 그거 믿을 수 있냐 하면 또 아니에요.
-만든 본인도 코드를 다 설명 못 하거든요.
+바이브코딩으로 만든 앱은 점점 늘어나는데, 그거 믿을 수 있냐 하면 또 아니에요. 만든 본인도 코드를 다 설명 못 하거든요.
 
 그렇다고 하나하나 다 검토 받으라고 하면 사람들 학을 뗍니다.
 안 하거나, 숨기거나 둘 중 하나에요.
 
-그래서 필요한 게 적정기술이에요. 신경 안 쓰게 하면서도 안전한 거.
-그 방법을 찾는 게 3부입니다.
-
-- **이 장이 없으면 3부가 제품 소개로 들린다.** 여기가 3부의 서론이다
-- **「적정기술」은 1부 14 에서 이미 꺼낸 단어다.** 금지도 수억짜리 사업도 아닌
-  빈칸을 2·3부가 메운다는 얘기였고, 여기서 갚는다. 새로 꺼내는 말이 아니다
-- 제목(**신경 안 쓰게 하면서도 안전하게**)이 공고문의 「Git 저장소만 올리면」과
-  **같은 말**이다. 앞 장에서 약속했고, 이 장에서 왜 그렇게 약속했는지 말한다
-- ⚠ 세 번째 불릿에서 한 박자 쉴 것 — **「만든 본인도 코드를 다 설명 못 한다」**가
-  이 방에서 제일 찔리면서도 아무도 부정 못 하는 문장이다
-- 30~40초. 3분 중 가장 긴 호흡이지만 쓸 값어치가 있다
+그래서 필요한 게 적정기술이에요.
 :::
 
 
 ## 제가 지어낸 접근이 아닙니다 — Trusted CI {.fit}
 
-미국 **NSF 사이버보안 우수센터**. 연구 인프라 프로젝트에 **1:1 로 붙어서** 같이 고칩니다
+미국 **NSF 사이버보안 우수센터**. **2012년부터 14년째**, 지금은 **연 600만 달러 · 2029년까지** 확정.
+연구 인프라 프로젝트에 **1:1 로 붙어서** 같이 고칩니다
 
-| 내놓은 것 | 핵심 | 우리로 치면 |
-|---|---|---|
-| **Framework** | 4개 기둥 · **16개 Must**<br>*「controls 에만 좁게 집중한 지침이 넘쳐서」 만들었다고 밝힙니다* | 구현을 고정하지 않는 **프로파일** |
-| **OSCRP**<br>*Open Science<br>Cyber Risk Profile* | 공격자나 수법이 아니라 **자산과 피해 영향**으로 본다<br>*ESnet 과 공동 · 2017 년 문서, 저장소 최종 갱신 2021* | **「전부 C」 대신 판단 근거를** |
+::: {.callout .quote}
+**Framework 를 왜 만들었나** — *"In response to an abundance of guidance focused narrowly on
+cybersecurity **controls** …"* \
+**시킬 항목만 늘어놓은 지침은 넘치는데, 「누가 정하고 돈은 어디서 나오나」는 아무도 안 씁니다.**
+그래서 네 기둥이 **사명 · 거버넌스 · 자원 · 통제** 입니다 — 통제는 그중 **하나**일 뿐입니다
+:::
 
-실제로 붙은 것들 — **Project Jupyter**(2021) · **Singularity**(2019, 현 **Apptainer**) ·
-**Globus**(2015) · **Pegasus · perfSONAR · Tapis**(소프트웨어 보증) \
-웨비나(2016~2025)에는 **EPICS · RTEMS** 도 있습니다 — **가속기·대형 실험장치 제어 시스템**이요.
-요즘 내건 과제는 **「Secure Use of AI」**
+::: {.callout .quote}
+**OSCRP 는 무엇을 하나** — *"bridge the **communication gap** between scientists and IT security
+professionals"* · *"**not** concerned about threat actors or specific attack methods, but
+**what assets** … **what harms** … **what impacts**"* \
+보안을 올리면 **당신 연구의 위험이 준다**를 보여주는 문서입니다. \
+**working group 이 만들어 올린 겁니다. 위에서 내려온 게 아닙니다** —
+지금도 **GitHub 이슈로 누구나 문제를 제기**합니다
+:::
 
-**2012년에 시작해 14년째입니다.** 네 번 넘게 갱신됐고, 지금은 **연 600만 달러 · 2029년까지** 확정입니다
+**소프트웨어** Project Jupyter(2021) · Singularity(2019, 현 Apptainer) · Globus(2015) · Pegasus · perfSONAR · Tapis \
+**시설 · 망** **Gemini 천문대** · **연구선단**(Academic Research Fleet) · **TransPAC**(미국–아시아태평양 연구망) · FABRIC · Chicago Array of Things \
+**웨비나**(2016~2025) **EPICS · RTEMS** — **가속기 · 대형 실험장치 제어 시스템**
 
 ::: punch
 **개방을 깨지 않는 보안**은 이미 하나의 분야입니다. \
 **우리는 그 가이드가 없습니다** — 그래서 2부를 만든 겁니다
 :::
 
-::: ref
-**Trusted CI: The NSF Cybersecurity Center of Excellence** — 2012 **CTSC** 로 시작(NSF ACI-**1234408**) · 2016 CCoE 지정(ACI-**1547272**, 500만 달러) · OAC-**1920430** · OAC-**2241313** · 2024 갱신 **연 600만 달러 · 2029. 9.까지**(중심 기관 Lawrence Berkeley National Laboratory) \
-[trustedci.org](https://www.trustedci.org/) · [Framework Core — 4 Pillars · 16 Musts](https://www.trustedci.org/framework/core) · [OSCRP](https://www.trustedci.org/oscrp) *(× DOE ESnet)* · [github.com/trustedci/OSCRP](https://github.com/trustedci/OSCRP) \
-[웨비나 2016~2025](https://www.trustedci.org/webinars) · [YouTube @TrustedCI](https://www.youtube.com/@TrustedCI/videos) · [2023. 1. Gedare Bloom, *Improving the Security of Open-Source Software Infrastructure* — **RTEMS · EPICS**](https://www.trustedci.org/trusted-ci-pod/2023/1/23/january-2023-improving-the-security-of-open-source-software-infrastructure) · [arXiv 1904.05383 — *Trusted CI Experiences in Cybersecurity and Service to Open Science* (PEARC '19)](https://arxiv.org/abs/1904.05383) \
-**협력 근거** — [Project Jupyter 2021](https://blog.trustedci.org/2021/08/engagement-with-jupyter.html) *보안 문서 공백 조사 + 배포 유형별(슈퍼컴센터·캠퍼스 클러스터) 모범사례 작성* ([Jupyter 측 기록](https://blog.jupyter.org/posts/2021/trusted-ci-cybersecurity-engagement-with-jupyter/)) · [Singularity 2019~20](https://blog.trustedci.org/2020/04/singularity-report.html) *Sylabs·Open Science Grid 와 보안 평가, 2020. 4. 보고서* · [Globus 2015](https://blog.trustedci.org/2015/01/globus-and-ctsc-engagement-data-sharing.html) *CTSC 시절, 데이터 공유* · [Pegasus · perfSONAR · Tapis](https://www.trustedci.org/software-assurance) *소프트웨어 보증*
-:::
-
 ::: notes
 그리고 이거, 제가 지어낸 접근이 아니에요.
 
 미국에 Trusted CI 라고 NSF 사이버보안 우수센터가 있어요.
-연구 인프라 프로젝트에 1:1 로 붙어서 같이 고쳐주는 데에요.
+2012년에 시작해서 14년째고요, 지금은 연 600만 달러씩 2029년까지 확정이에요.
+연구 인프라 프로젝트에 1:1 로 붙어서 같이 고쳐 줍니다.
 
-두 개만 보시면요.
-하나는 Framework 인데, 기둥 네 개에 꼭 지켜야 할 게 열여섯 개 있어요.
-재밌는 게, 만든 이유를 「controls 에만 좁게 집중한 지침이 너무 많아서」라고 밝혀요.
-그러니까 뭘 어떻게 구현하라고 안 하고, 뭘 충족해야 하는지만 정한 거죠. 프로파일이에요.
+여기가 Framework 이라는 걸 내놨는데, 만든 이유를 이렇게 밝혀요.
+「통제 항목에만 좁게 집중한 지침이 넘쳐나서」 만들었다.
+무슨 말이냐면 — **시킬 거리는 많은데, 누가 정하고 돈은 어디서 나오는지는 아무도 안 쓴다**는 거에요.
+그래서 기둥을 네 개로 뒀어요. 사명, 거버넌스, 자원, 그리고 통제.
+통제는 그중 하나일 뿐이에요.
 
-다른 하나는 OSCRP 라고, 연구 데이터 위험을 정리한 문서에요.
-이것도 재밌는 게, 공격자가 누구냐 수법이 뭐냐를 안 봐요.
-내가 가진 자산이 뭐고, 그게 털리면 무슨 피해가 나냐로 봅니다.
-현장이 혼자 등급 찍지 말라고 근거를 만들어 준 거죠.
+다른 하나가 OSCRP 인데, 이건 목적이 더 재밌어요.
+「과학자와 IT 보안 담당자 사이의 소통 간극을 메우려고」 만들었대요.
+보안을 올리면 당신 연구의 위험이 준다, 그걸 보여주는 문서에요.
+방법도 그래요. 공격자가 누구냐 수법이 뭐냐를 안 봐요.
+내가 가진 자산이 뭐고, 그게 어떻게 상하고, 그러면 무슨 피해가 나냐로 봅니다.
 
-대상도 JupyterHub, Slurm, Globus 같은 거에요. 연구자가 매일 쓰는 것들.
-요즘은 「Secure Use of AI」를 내걸고 있고요.
+그리고 이게 어떻게 만들어졌냐가 중요한데요.
+working group 이 만들어서 올린 거에요. 위에서 내려온 게 아니고요.
+지금도 GitHub 에 올려두고 「문제 있으면 이슈 남기세요」 합니다.
+쓰는 사람들이 지침을 같이 고치는 거죠.
 
-개방을 깨지 않는 보안, 이게 이미 하나의 분야입니다.
+붙은 걸 보면요.
+소프트웨어는 Jupyter, Singularity — 지금 Apptainer죠, Globus, perfSONAR.
+시설도 붙어요. 제미니 천문대, 연구선단, 그리고 TransPAC —
+이건 미국이랑 아시아태평양 연구망 잇는 사업이에요. 남 얘기가 아니죠.
+웨비나에는 EPICS 랑 RTEMS 도 있어요. 가속기 제어 시스템이요.
 
-- **5부에서 회수한다.** 「남들은 고치는 데 돈을 씁니다」에서 같은 이름이 다시 나오고
-  거기선 **금액**이 붙는다 — 3,000만 달러. 여기서 「방법이 타당하다」를 벌어두면
-  거기서 「그래서 돈을 쓴다」가 선다
-- ⚠ **순서가 중요하다.** 5부에서 처음 꺼내면 「외국은 이러니 우리도 돈 주세요」로
-  들려서 바로 튕긴다. 여기서 먼저 **방법의 증거**로 깔고 가야 한다
-- OSCRP 의 「자산·영향으로 본다」가 **5부 ③④ 과분류**와 같은 축이다 —
-  현장에 판단 근거가 없다는 게 우리 문제인데, 저쪽은 그 근거를 문서로 만들었다
-- Framework 의 「구현을 고정하지 않는다」가 **5부 보론**과 같은 말이다. 거기서 이 장을 회수한다
-- **「우리는 그 가이드가 없다」가 2부의 위상을 바꾼다.** 2부 열 개는 제 노하우 자랑이 아니라
-  **없는 가이드를 흉내 내 본 것**이다. 그렇게 말하면 2부가 통째로 겸손해지면서 동시에 커진다
-- 비유로 쓸 것 — **The Missing Semester of Your CS Education**(MIT, 한국어판
-  missing-semester-kr.github.io). 셸·git·디버깅처럼 **대학이 안 가르치는데 다 필요한 것**을 모았다.
-  2020년 1월 IAP 로 실제 열린 수업이지만, **지금 유통되는 건 강의 노트 사이트**다 —
-  그래서 더 넓게 쓰인다. **보안에는 그 missing semester 가 없다.** 각자 눈치로 배운다
-- 그 결론은 **완화가 아니라 교육과 레퍼런스**다. 5부 ⑧ 에서 그걸 요구한다
-- 그 결과가 5부 Tailscale 장면이다 — 더 안전하려고 고른 도구가 승인 대상이 된다
-- 숫자 카드 (물으면) — **2024년 갱신, 연 600만 달러로 2029년 9월까지.**
-  중심 기관이 **Lawrence Berkeley National Laboratory** 로 넘어갔다
-  (2022~2024 는 Univ. of Illinois Urbana-Champaign).
-  참여 — Indiana Univ. · Univ. of Illinois · Univ. of Wisconsin–Madison ·
-  Pittsburgh Supercomputing Center · Arizona State Univ. · Sustainable Horizons Institute · Berkeley Lab
-- 갱신으로 붙은 것 — **규제 대상 연구(Regulated Research)** 지원,
-  RRCoP(300개 이상 고등교육기관 참여) 합류, **Software Assurance Framework**,
-  Fellows·Students 프로그램, **NSF Major Facilities 상주(residency) 프로그램**
-  · 「우리는 그 가이드가 없다」를 물으면 **상주 프로그램**을 들 것 — 1:1 보다 더 깊다
-- **OSCRP 가 낡았다는 건 숨기지 말 것.** 2017 년 문서고 공개 저장소 릴리스는
-  v1.0(2021. 3.)~**v1.3(2021. 11.)** 이 마지막이다. 2022. 11. 에 Science DMZ ·
-  Software Assurance · OT · 클라우드 요소를 더한 갱신이 공지됐지만 그 뒤로 조용하다.
-  → **「저쪽도 다 잘하는 건 아닙니다. 그래도 **있습니다**」**가 더 설득력 있다.
-  없는 쪽이 우리고, 그게 이 장의 논지다
-- ☐ 2024 갱신 award 번호는 공개 자료에서 확인이 안 됐다. **묻거든 번호는 말하지 말 것** —
-  확인된 건 OAC-1920430 · OAC-2241313 (2019~2024) 둘이다
-- ⚠ **Slurm 을 뺐다.** 전에 「JupyterHub·Slurm·Globus·Apptainer」로 적어 뒀는데
-  **Slurm 은 Trusted CI 협력 근거를 못 찾았다.** 근거 없는 이름을 세워 두면
-  이 장이 하려는 일(출처로 받치기)과 정반대가 된다. 확인된 것만 남겼다
-- **perfSONAR 를 꼭 짚을 것** — 연구망 하는 사람에겐 Slurm 보다 훨씬 와닿는다.
-  「우리가 매일 쓰는 그 perfSONAR 도 저기서 보안 검토를 받았습니다」
-- Jupyter 건이 가장 구체적이다 — **보안 문서가 어디에 비었는지 전수 조사**하고,
-  배포 유형별(슈퍼컴센터·캠퍼스 클러스터) **모범사례 문서를 써 줬다.**
-  그게 바로 「우리는 그 가이드가 없습니다」의 반대편 사례다
-- **Apptainer 는 당시 이름이 Singularity** 였다. 묻거든 그렇게 답할 것
-- **EPICS 가 이 방에서 제일 센 단어다.** 가속기·대형 실험장치 제어 시스템이고,
-  1부 **「고립이 면죄부입니다」**(ADC·라즈베리파이)와 정확히 같은 영역이다.
-  거기로 회수할 것 — **「아까 계측 게이트웨이 붙이면 소명서 매년 새로 쓴다고 했죠?
-  저쪽은 그걸 공개 세미나로 다룹니다」**
-  · 2023. 1. Gedare Bloom(UCCS, RTEMS 메인테이너). RTEMS 실시간 OS 와 EPICS 가 대상
-  · 그 발표의 결론도 쓸 만하다 — **「커뮤니티에 *대한* 연구가 아니라 커뮤니티와
-    *함께* 하는 연구여야 한다」**. 5부 ⑧ 전담 조직이 어떻게 일해야 하는지와 같은 말
-- arXiv 1904.05383(PEARC '19) 의 핵심 — **위에서 내리꽂는 규정이 아니라
-  「서비스 모델」**이다. 상담하고 같이 고친다. 그게 engagement 의 정체다.
-  Q&A 에서 「그럼 누가 강제하냐」가 오면 이 논문으로 받을 것
+- **TransPAC 을 흘리지 말 것** — 미국–아시아태평양 **연구망** 연결 사업이다.
+  이 방에서 남 얘기가 아니고, 「연구망도 저기 붙는다」가 된다
+- **Gemini 천문대 · 연구선단 · Chicago Array of Things** 가 대형 연구시설·계측 쪽이다.
+  소프트웨어만 나열하면 「개발 얘기」로 들리는데, 시설이 붙으면 **우리 얘기**가 된다
+- ⚠ **EPICS 에서 1부를 회수할 것** — 「아까 계측 게이트웨이 붙이면 소명서 매년 새로
+  쓴다고 했죠? 저쪽은 그걸 공개 세미나로 다룹니다」. 이 대비가 제일 아프다
+- **「시어머니만 많다」가 Framework 인용의 풀이다.** 5부 54 「시어머니 둘 —
+  국정원·감사원」과 같은 말이라 거기서 메아리가 난다. 다만 그 단어는 5부에서 쓸 것
+- ⚠ **「아래서 만들어 올렸다」가 이 인용의 핵심이다.** 결과물 자랑이 아니라 **거버넌스** 얘기다.
+  working group 이 쓰고, GitHub 이슈로 계속 고친다. 우리 지침은 **누가 썼는지도 모르고
+  의견 낼 데도 없다.** 그 대비를 말로 한 번 짚을 것
+- 그래서 **5부 ⑧ 이 「조직을 만들자」로 끝나면 안 된다** — 그 조직이 혼자 쓰는 게 아니라
+  **working group 을 열고 이슈를 받는 방식**이어야 한다. ⑨(개편 전 고지)와도 같은 축
+- Bloom 발표(2023. 1.)의 결론도 쓸 만하다 — 「커뮤니티에 *대한* 연구가 아니라
+  커뮤니티와 *함께* 하는 연구여야 한다」
+- arXiv 1904.05383 의 핵심 — 위에서 내리꽂는 규정이 아니라 **서비스 모델**이다.
+  「그럼 누가 강제하냐」가 오면 이걸로 받을 것
 - ⚠ 자랑처럼 들리지 않게 — **「제가 지어낸 게 아닙니다」가 이 장의 전부**다.
   바로 다음 장이 「먼저, 한계부터」라 톤이 맞는다
+- ☐ 2024 갱신 award 번호는 공개 자료에서 확인이 안 됐다. **묻거든 번호는 말하지 말 것**
+:::
+
+
+## Trusted CI — 출처 {.fit}
+
+| | |
+|---|---|
+| **센터** | [trustedci.org](https://www.trustedci.org/) · 2012 **CTSC** 로 시작(NSF ACI-**1234408**) · 2016 CCoE 지정(ACI-**1547272**, 500만 달러) · OAC-**1920430** · OAC-**2241313**<br>2024 갱신 **연 600만 달러 · 2029. 9.까지** — 중심 기관 Lawrence Berkeley National Laboratory |
+| **Framework** | [Framework Core — 4 Pillars · 16 Musts](https://www.trustedci.org/framework/core) |
+| **OSCRP** | [trustedci.org/oscrp](https://www.trustedci.org/oscrp) *(× DOE ESnet)* · [github.com/trustedci/OSCRP](https://github.com/trustedci/OSCRP) *(이슈로 의견 접수)* · [IEEE S&P 2017 — 10.1109/MSP.2017.3681058](https://dl.acm.org/doi/10.1109/MSP.2017.3681058)<br>2017년 문서, 공개 저장소 최종 갱신 **2021** |
+| **협력 근거** | [Project Jupyter 2021](https://blog.trustedci.org/2021/08/engagement-with-jupyter.html) *보안 문서 공백 조사 + 배포 유형별 모범사례 작성* ([Jupyter 측 기록](https://blog.jupyter.org/posts/2021/trusted-ci-cybersecurity-engagement-with-jupyter/)) · [Singularity 2019~20](https://blog.trustedci.org/2020/04/singularity-report.html) *Sylabs·Open Science Grid 와 보안 평가* · [Globus 2015](https://blog.trustedci.org/2015/01/globus-and-ctsc-engagement-data-sharing.html) · [Pegasus · perfSONAR · Tapis](https://www.trustedci.org/software-assurance) |
+| **협력 사례** | [Success Stories](https://www.trustedci.org/successstories) — Gemini 천문대 · 연구선단 · TransPAC · FABRIC · Open XDMoD · Pegasus · Tapis · Custos · Chicago Array of Things · Wildbook · UC Berkeley |
+| **웨비나** | [2016~2025 목록](https://www.trustedci.org/webinars) · [YouTube @TrustedCI](https://www.youtube.com/@TrustedCI/videos)<br>[2023. 1. Gedare Bloom, *Improving the Security of Open-Source Software Infrastructure* — **RTEMS · EPICS**](https://www.trustedci.org/trusted-ci-pod/2023/1/23/january-2023-improving-the-security-of-open-source-software-infrastructure) |
+| **논문** | [arXiv 1904.05383 — *Trusted CI Experiences in Cybersecurity and Service to Open Science*](https://arxiv.org/abs/1904.05383) (PEARC '19) |
+
+::: notes
+**출처 장** · `OPT`
+- **넘기는 장이다.** 읽지 말고 「자료는 여기 있습니다」 하고 바로 넘길 것
+- Q&A 때 여기로 돌아오면 된다. 질문이 「근거가 뭐냐」로 오는 경우가 많다
+- 배포물·저장소에도 같은 목록이 들어간다
 :::
 
 
