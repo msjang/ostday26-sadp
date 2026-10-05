@@ -171,7 +171,13 @@ html.reveal-print .reveal .slides section.bare  { padding:56px var(--deck-pad-x)
    3. 본문 타이포
    ═══════════════════════════════════════════════════════════════════════ */
 /* 글꼴·바탕 — 값은 themes/*.css 가 가집니다 */
-.reveal{ font-family:var(--body-font); color:var(--ink) }
+.reveal{
+  font-family:var(--body-font); color:var(--ink);
+  /* 한글 줄바꿈 — 기본값은 음절 단위로 끊어서 「각 권 / 리자에게」 처럼 단어가 쪼개집니다.
+     keep-all 은 띄어쓰기에서만 끊습니다. 대신 긴 URL·영문이 넘칠 수 있어
+     break-word 로 「넘칠 때만」 끊게 둡니다(anywhere 는 표 최소폭까지 줄여서 안 씁니다). */
+  word-break:keep-all; overflow-wrap:break-word;
+}
 .reveal h1,.reveal h2,.reveal h3,.reveal h4,.reveal h5,.reveal h6{ font-family:var(--head-font) }
 .reveal pre, .reveal code, .reveal kbd, .reveal samp{ font-family:var(--mono) }
 .reveal-viewport{ background:var(--surface) }
