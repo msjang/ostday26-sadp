@@ -607,10 +607,14 @@
     function toggle() { on = !on; apply(); }
 
     // 토글은 '길게 누르기'로만. 발표 중에 손이 스쳐서 덱이 10장 줄어드는
-    // 사고를 막습니다. 짧게 누르면 「길게 ▸」를 잠깐 띄워 방법을 알려 줍니다.
+    // 사고를 막습니다. 짧게 누르면 흔들고 「꾹 ▸」를 잠깐 띄웁니다.
+    // ⚠ 힌트에 「길게」를 쓰면 안 됩니다 — 모드 이름이 짧은/전체라서
+    //   「긴 모드로 바뀌었다」로 읽힙니다. 실제로 겪은 혼동입니다.
     function hint() {
       clearTimeout(hintTimer);
-      btn.textContent = '길게 ▸';
+      btn.textContent = '꾹 ▸';
+      btn.classList.add('nudge');
+      setTimeout(() => btn.classList.remove('nudge'), 320);
       hintTimer = setTimeout(() => { btn.textContent = on ? '짧은 모드' : '전체'; }, 900);
     }
     longPressable(btn, { onLong: toggle, onTap: hint, onContext: toggle });
