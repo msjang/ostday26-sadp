@@ -456,14 +456,7 @@
       //   인덱스가 한 칸 밀리고 활성 표시가 제목에 찍힙니다.
       b.links.forEach((a, k) => a.classList.toggle('on', k === active));
     }
-    // 쪽번호는 '보이는 장' 기준입니다. 짧은 모드로 .skip 을 숨기면
-    // 76 중 35 가 아니라 66 중 32 로 세야 남은 분량 감각이 맞습니다.
-    if (b.foot) {
-      const vis = sections.filter(s => s.parentNode);   // 짧은 모드에선 뗀 장이 빠집니다
-      const k = vis.indexOf(sec);
-      b.foot.querySelector('.pageno').textContent =
-        (k < 0 ? i + 1 : k + 1) + ' / ' + vis.length;
-    }
+    if (b.foot) b.foot.querySelector('.pageno').textContent = (i + 1) + ' / ' + sections.length;
   }
 
   const live = isPrint ? null : makeBars(slidesEl);
@@ -491,9 +484,9 @@
   }
 
   /* ── 좌하단 도구 바구니 ───────────────────────────────────────────
-     짧은 모드 버튼과 타이머가 나란히 들어갑니다. .slides 가 아니라
-     .reveal 에 답니다 — .slides 는 확대/축소가 걸려 있고 인쇄 때 쪽마다
-     복제됩니다. .reveal 은 transform 이 없어 fixed 가 화면 기준입니다.   */
+     지금은 타이머 하나가 들어갑니다. .slides 가 아니라 .reveal 에 답니다
+     — .slides 는 확대/축소가 걸려 있고 인쇄 때 쪽마다 복제됩니다.
+     .reveal 은 transform 이 없어 fixed 가 화면 기준으로 먹습니다.        */
   let _tools = null;
   function tools() {
     if (!_tools) {
@@ -569,95 +562,6 @@
     el.addEventListener('contextmenu', e => {
       e.preventDefault(); cancel(); if (onContext) onContext();
     });
-  }
-
-  /* ── 짧은 모드 ────────────────────────────────────────────────────
-     {.skip} 장을 덱에서 빼 버립니다. 회색 제목은 '이 장은 버려도 된다'는
-     상태만 말할 뿐 넘기라는 지시가 아니어서, 눈으로 보고도 입이 먼저
-     나갑니다. 참는 대신 없애는 쪽이 확실합니다.
-
-     ⚠ data-visibility="hidden" 로는 안 됩니다. reveal 은 그 속성을
-       초기화 때 한 번만 읽고, Reveal.sync() 는 다시 읽지 않습니다.
-       런타임에 붙여 봐야 getTotalSlides() 도 탐색 순서도 그대로입니다.
-       그래서 섹션을 **DOM 에서 실제로 떼었다 다시 꽂습니다.**
-       되돌릴 때 자리를 찾으려고 원본 순서(sections)를 그대로 들고 있습니다. */
-  function makeShortMode() {
-    if (isPrint) return;
-    const skips = sections.filter(s => s.classList.contains('skip'));
-    if (!skips.length) return;
-    const KEY = 'deck-short:' + location.pathname;
-
-    const btn = document.createElement('button');
-    btn.className = 'deck-short';
-    btn.type = 'button';
-    btn.title = '짧은 모드 — 회색 제목 ' + skips.length + '장을 덱에서 뺍니다. 길게 누르세요 (단축키 K)';
-    tools().prepend(btn);          // 시계 왼쪽
-
-    let on = false, hintTimer = null;
-    try { on = localStorage.getItem(KEY) === '1'; } catch (e) {}
-
-    const inDom = s => !!s.parentNode;
-
-    function apply() {
-      // 지금 보고 있는 장을 기억해 둡니다. 떼고 붙이면 reveal 의 현재 장
-      // 포인터가 떨어진 섹션을 가리켜 화면이 비므로, 끝나고 반드시 다시
-      // 앉혀야 합니다. 새로고침으로 짧은 모드에 들어올 때도 같은 일이 납니다.
-      const cur = Reveal.getCurrentSlide();
-      const curIdx = cur ? sections.indexOf(cur) : 0;
-
-      if (on) {
-        skips.forEach(s => { if (inDom(s)) s.parentNode.removeChild(s); });
-      } else {
-        // 원본 순서대로, 뒤쪽에서 아직 붙어 있는 첫 섹션 앞에 꽂습니다
-        sections.forEach((s, i) => {
-          if (inDom(s)) return;
-          const after = sections.slice(i + 1).find(inDom);
-          slidesEl.insertBefore(s, after || null);
-        });
-      }
-
-      btn.classList.toggle('on', on);
-      clearTimeout(hintTimer);                  // 힌트가 떠 있었으면 지웁니다
-      btn.textContent = on ? '짧은 모드' : '전체';
-      try { localStorage.setItem(KEY, on ? '1' : '0'); } catch (e) {}
-
-      Reveal.sync();
-
-      // 보고 있던 장이 남아 있으면 그대로, 떨어졌으면 바로 다음 장으로.
-      // (끝에서 떨어졌으면 앞으로 되돌아갑니다)
-      const vis  = sections.filter(inDom);
-      const seat = (cur && inDom(cur)) ? cur
-                 : sections.slice(curIdx + 1).find(inDom)
-                || sections.slice(0, curIdx).reverse().find(inDom);
-      if (seat) Reveal.slide(vis.indexOf(seat));
-
-      Reveal.layout();
-      sync();
-    }
-    function toggle() { on = !on; apply(); }
-
-    // 토글은 '길게 누르기'로만. 발표 중에 손이 스쳐서 덱이 10장 줄어드는
-    // 사고를 막습니다. 짧게 누르면 흔들고 「꾹 ▸」를 잠깐 띄웁니다.
-    // ⚠ 힌트에 「길게」를 쓰면 안 됩니다 — 모드 이름이 짧은/전체라서
-    //   「긴 모드로 바뀌었다」로 읽힙니다. 실제로 겪은 혼동입니다.
-    function hint() {
-      clearTimeout(hintTimer);
-      btn.textContent = '꾹 ▸';
-      btn.classList.add('nudge');
-      setTimeout(() => btn.classList.remove('nudge'), 320);
-      hintTimer = setTimeout(() => { btn.textContent = on ? '짧은 모드' : '전체'; }, 900);
-    }
-    longPressable(btn, { onLong: toggle, onTap: hint, onContext: toggle });
-
-    document.addEventListener('keydown', e => {
-      if (e.key !== 'k' && e.key !== 'K') return;
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
-      if (/^(INPUT|TEXTAREA)$/.test(e.target.tagName) || e.target.isContentEditable) return;
-      e.preventDefault(); toggle();
-    });
-
-    // 첫 그림은 reveal 이 준비된 뒤에 — sync()/Reveal.slide 가 필요합니다
-    Reveal.on('ready', () => apply());
   }
 
   /* ── 남은 시간 타이머 ─────────────────────────────────────────────
@@ -750,7 +654,6 @@
     draw();
   }
   makeTimer();
-  makeShortMode();
 
   /* ── 슬라이드 비율 ────────────────────────────────────────────────
      reveal 의 width/height 가 곧 슬라이드 좌표계입니다. 여기서 정한 값이
