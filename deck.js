@@ -460,11 +460,13 @@
   }
 
   const live = isPrint ? null : makeBars(slidesEl);
+  let onSlideForTimer = null;          // makeTimer 가 채웁니다 (장별 시계 리셋)
   const sync = () => {
     const cur = Reveal.getCurrentSlide();
     if (!cur) return;
     const i = sections.indexOf(cur);
     if (live) paint(live, i);
+    if (onSlideForTimer) onSlideForTimer();
     whenMeasurable(cur, () => measure(cur, live));
   };
 
@@ -496,11 +498,24 @@
     const KEY = 'deck-timer:' + location.pathname;
     const TOTAL = MIN * 60000;
 
+    // 전체 | 이 장 — 한 덩이가 통째로 시작·정지 버튼입니다
     const el = document.createElement('button');
     el.className = 'deck-timer';
     el.type = 'button';
     el.title = '클릭: 시작·정지 · 오른쪽 클릭: 처음으로 · 단축키 T';
+    el.innerHTML = '<span class="t-total"></span><span class="t-slide"></span>';
+    const elTotal = el.querySelector('.t-total');
+    const elSlide = el.querySelector('.t-slide');
     document.querySelector('.reveal').appendChild(el);
+
+    // 장별 시계는 '발표가 돌고 있을 때'만 셉니다. 멈춰 있으면 0:00 —
+    // 시작 전에 슬라이드를 넘겨보다가 색이 뜨는 걸 막습니다.
+    const SLIDE_WARN = (Number(DECK.slideWarn) || 90) * 1000;
+    const SLIDE_OVER = (Number(DECK.slideOver) || 120) * 1000;
+    let slideFrom = null;              // 이 장에 들어온 시각
+    let slideHeld = 0;                 // 멈춰 있던 동안을 뺀 누적
+    const slideSpent = () =>
+      slideHeld + (st.startedAt && slideFrom ? Date.now() - slideFrom : 0);
 
     // {startedAt, elapsed}  — 멈춰 있으면 startedAt 이 null 입니다
     let st = { startedAt: null, elapsed: 0 };
@@ -508,23 +523,42 @@
     const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} };
     const spent = () => st.elapsed + (st.startedAt ? Date.now() - st.startedAt : 0);
 
+    const mmss = ms => {
+      const t = Math.max(0, ms);
+      return Math.floor(t / 60000) + ':' + String(Math.floor(t % 60000 / 1000)).padStart(2, '0');
+    };
+
     function draw() {
       const left = TOTAL - spent();
       const over = left < 0;
-      const t = Math.abs(left);
-      const mm = Math.floor(t / 60000);
-      const ss = Math.floor(t % 60000 / 1000);
-      el.textContent = (over ? '+' : '') + mm + ':' + String(ss).padStart(2, '0');
+      elTotal.textContent = (over ? '+' : '') + mmss(Math.abs(left));
+      elTotal.classList.toggle('warn', !over && left <= 5 * 60000);
+      elTotal.classList.toggle('over', over);
+
+      const sp = slideSpent();
+      elSlide.textContent = mmss(sp);
+      elSlide.classList.toggle('warn', sp >= SLIDE_WARN && sp < SLIDE_OVER);
+      elSlide.classList.toggle('over', sp >= SLIDE_OVER);
+
       el.classList.toggle('running', !!st.startedAt);
-      el.classList.toggle('warn', !over && left <= 5 * 60000);
-      el.classList.toggle('over', over);
     }
+    // 슬라이드가 바뀌면 장별 시계만 0 으로. 전체 시계는 안 건드립니다.
+    function newSlide() { slideHeld = 0; slideFrom = Date.now(); draw(); }
     function toggle() {
-      if (st.startedAt) { st.elapsed = spent(); st.startedAt = null; }
-      else st.startedAt = Date.now();
+      if (st.startedAt) {                       // 정지 — 멈춘 만큼은 안 셉니다
+        st.elapsed = spent(); st.startedAt = null;
+        slideHeld = slideSpent(); slideFrom = null;
+      } else {                                  // 시작
+        st.startedAt = Date.now(); slideFrom = Date.now();
+      }
       save(); draw();
     }
-    function reset() { st = { startedAt: null, elapsed: 0 }; save(); draw(); }
+    function reset() {
+      st = { startedAt: null, elapsed: 0 };
+      slideHeld = 0; slideFrom = null;
+      save(); draw();
+    }
+    onSlideForTimer = newSlide;
 
     el.addEventListener('click', toggle);
     el.addEventListener('contextmenu', e => { e.preventDefault(); reset(); });

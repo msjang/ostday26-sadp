@@ -695,20 +695,43 @@ html.callout-noicon .reveal .callout{ --cal-icon:initial }
 .reveal .pretty{ text-wrap:pretty }
 
 /* ── 남은 시간 타이머 ───────────────────────────────────────────────
-   좌하단. .slides(확대/축소됨)가 아니라 .reveal 에 붙어 있어서 화면 크기가
-   변해도 글자 크기가 그대로입니다. reveal 의 화살표는 우하단이라 안 겹칩니다. */
+   좌하단 「전체 | 이 장」. .slides(확대/축소됨)가 아니라 .reveal 에 붙어
+   있어서 화면 크기가 변해도 글자 크기가 그대로입니다.
+   reveal 의 화살표는 우하단이라 안 겹칩니다. */
 .reveal .deck-timer{
   position:fixed; left:16px; bottom:12px; z-index:40;
+  display:flex; align-items:stretch; gap:0;
   appearance:none; border:1px solid var(--rule,#dfe4ea); border-radius:8px;
-  background:var(--surface,#fff); color:var(--ink-faint,#8b95a2);
+  background:var(--surface,#fff); overflow:hidden;
   font-family:var(--mono); font-size:15px; font-weight:700; letter-spacing:.02em;
-  padding:5px 11px; cursor:pointer; opacity:.55;
-  font-variant-numeric:tabular-nums; transition:opacity .15s, color .15s;
+  padding:0; cursor:pointer; opacity:.55;
+  font-variant-numeric:tabular-nums; transition:opacity .15s;
 }
 .reveal .deck-timer:hover{ opacity:1 }
-.reveal .deck-timer.running{ opacity:.95; color:var(--ink-soft,#5b6775) }
-.reveal .deck-timer.warn{ opacity:1; color:#b4590f; border-color:#f0c9a3 }
-.reveal .deck-timer.over{ opacity:1; color:#fff; background:#c0392b; border-color:#c0392b }
+.reveal .deck-timer.running{ opacity:.95 }
+.reveal .deck-timer > span{
+  display:block; padding:5px 11px; color:var(--ink-faint,#8b95a2);
+  transition:color .15s, background .15s;
+}
+/* 가운데 칸막이 — 전체와 이 장을 눈으로 가릅니다 */
+.reveal .deck-timer .t-slide{ border-left:1px solid var(--rule,#dfe4ea) }
+.reveal .deck-timer.running .t-total,
+.reveal .deck-timer.running .t-slide{ color:var(--ink-soft,#5b6775) }
+
+/* 전체 — 5분 이내 주황, 넘기면 빨강 칸 */
+.reveal .deck-timer .t-total.warn{ color:#b4590f }
+.reveal .deck-timer .t-total.over{ color:#fff; background:#c0392b }
+
+/* 이 장 — 1:30 주황, 2:00 빨강 + 깜빡.
+   깜빡임은 1초 주기로 흐려졌다 돌아오는 정도입니다. 화면이 그대로
+   중계되므로 번쩍이면 청중이 먼저 지칩니다.
+   ⚠ prefers-reduced-motion 이면 깜빡이지 않고 색만 남깁니다.            */
+.reveal .deck-timer .t-slide.warn{ color:#b4590f }
+.reveal .deck-timer .t-slide.over{ color:#c0392b; animation:deck-timer-blink 1s steps(1,end) infinite }
+@keyframes deck-timer-blink{ 0%,55%{ opacity:1 } 56%,100%{ opacity:.35 } }
+@media (prefers-reduced-motion:reduce){
+  .reveal .deck-timer .t-slide.over{ animation:none }
+}
 
 /* 인쇄에는 안 나갑니다 */
 html.reveal-print .reveal .deck-timer{ display:none }
