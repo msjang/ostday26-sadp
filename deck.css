@@ -265,6 +265,16 @@ html.fignum .reveal figcaption::before{
 #deck{ display:none }
 [data-markdown]:not([data-markdown-parsed]) textarea{ display:none }
 
+/* .key — 밀도가 높은데 반드시 전달돼야 하는 장. 「여기서 속도를 늦추라」는
+   발표자 신호입니다. .skip(회색)과 짝이고, 아무것도 안 붙은 장이 가운데입니다.
+   ⚠ --accent-2(#e8701a) 를 그대로 쓰지 않습니다. 흰 바탕 대비가 3.1:1 이라
+     투사하면 흐려집니다(테마 파일도 같은 경고를 답니다). 4.2:1 로 낮춘
+     같은 계열 주황을 기본값으로 두고, 어두운 테마는 --key-ink 로 덮습니다. */
+.reveal section.key h1,
+.reveal section.key h2{ color:var(--key-ink,#c2610d) }
+.reveal section.key h1 .keycap,
+.reveal section.key h2 .keycap{ background:var(--key-ink,#c2610d) }
+
 /* .skip — 시간이 모자라면 건너뛸 장. 제목만 회색으로 둡니다.
    발표자가 제목 색 하나로 완급을 잡는 용도이고, 본문·callout·punch 는
    건드리지 않습니다(건너뛰지 않기로 하면 평소처럼 쓰는 장이라서).
