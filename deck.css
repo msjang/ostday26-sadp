@@ -715,6 +715,7 @@ html.callout-noicon .reveal .callout{ --cal-icon:initial }
 .reveal .deck-tools > button:hover{ opacity:1 }
 
 /* 짧은 모드 — 켜면 {.skip} 장이 덱에서 빠집니다 */
+.reveal .deck-tools > button{ touch-action:manipulation; -webkit-touch-callout:none }
 .reveal .deck-tools > button.deck-short{
   padding:5px 11px; color:var(--ink-faint,#8b95a2);
   font-family:var(--body-font); font-size:13px; font-weight:700; letter-spacing:0;
@@ -724,7 +725,18 @@ html.callout-noicon .reveal .callout{ --cal-icon:initial }
 }
 
 /* 타이머 — 전체 | 이 장 */
-.reveal .deck-timer{ display:flex; align-items:stretch; overflow:hidden }
+.reveal .deck-timer{
+  display:flex; align-items:stretch; overflow:hidden;
+  /* 길게 누르기를 쓰므로, 폰에서 글자 선택·확대·iOS 길게누르기 메뉴를 막습니다 */
+  touch-action:manipulation; user-select:none; -webkit-user-select:none;
+  -webkit-touch-callout:none;
+}
+/* 길게 눌러 초기화했을 때 한 번 번쩍 — 폰에서는 이것 말고 피드백이 없습니다 */
+.reveal .deck-timer.flash{ animation:deck-timer-flash .32s ease-out }
+@keyframes deck-timer-flash{
+  0%{ box-shadow:0 0 0 0 rgba(26,79,156,.55) }
+  100%{ box-shadow:0 0 0 14px rgba(26,79,156,0) }
+}
 .reveal .deck-timer.running{ opacity:.95 }
 .reveal .deck-timer > span{
   display:block; padding:5px 11px; color:var(--ink-faint,#8b95a2);

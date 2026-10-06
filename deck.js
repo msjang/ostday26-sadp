@@ -599,7 +599,7 @@
     const el = document.createElement('button');
     el.className = 'deck-timer';
     el.type = 'button';
-    el.title = '클릭: 시작·정지 · 오른쪽 클릭: 처음으로 · 단축키 T';
+    el.title = '클릭: 시작·정지 · 길게 누르기(또는 오른쪽 클릭): 처음으로 · 단축키 T / Shift+T';
     el.innerHTML = '<span class="t-total"></span><span class="t-slide"></span>';
     const elTotal = el.querySelector('.t-total');
     const elSlide = el.querySelector('.t-slide');
@@ -657,7 +657,34 @@
     }
     onSlideForTimer = newSlide;
 
-    el.addEventListener('click', toggle);
+    /* 길게 누르면 초기화 — 폰에는 오른쪽 클릭도 Shift+T 도 없습니다.
+       누른 채 0.6초가 지나면 리셋하고, 버튼을 한 번 번쩍여 알려줍니다.
+       pointer 이벤트 하나로 마우스·터치·펜을 같이 받습니다.
+       ⚠ 손가락이 10px 넘게 움직이면 취소합니다. 그냥 pointermove 로
+         취소하면 손떨림만으로도 길게 누르기가 안 먹습니다.               */
+    let longTimer = null, longFired = false, px = 0, py = 0;
+    const cancelLong = () => { clearTimeout(longTimer); longTimer = null; };
+    el.addEventListener('pointerdown', e => {
+      px = e.clientX; py = e.clientY;
+      cancelLong();
+      longTimer = setTimeout(() => {
+        longFired = true;
+        reset();
+        el.classList.add('flash');
+        setTimeout(() => el.classList.remove('flash'), 320);
+        if (navigator.vibrate) navigator.vibrate(30);
+      }, 600);
+    });
+    el.addEventListener('pointermove', e => {
+      if (longTimer && Math.hypot(e.clientX - px, e.clientY - py) > 10) cancelLong();
+    });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(
+      t => el.addEventListener(t, cancelLong));
+
+    el.addEventListener('click', () => {
+      if (longFired) { longFired = false; return; }   // 길게 누른 직후의 click 은 버립니다
+      toggle();
+    });
     el.addEventListener('contextmenu', e => { e.preventDefault(); reset(); });
     document.addEventListener('keydown', e => {
       if (e.key !== 't' && e.key !== 'T') return;
