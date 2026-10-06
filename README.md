@@ -56,4 +56,3 @@ fonts/          D2Coding — 코드 블록 한글 열 맞춤용 (OFL 1.1)
 - **제3자 자료**(기관 공지 화면, 신문 기사, 미러 목록 등)는 **비평·인용** 목적으로
   사용했으며 각 권리자에게 저작권이 있습니다
 - `fonts/D2Coding-*.woff2` — SIL OFL 1.1, © NAVER Corporation (`fonts/OFL.txt`)
-- SADP 코드는 별도 오픈소스 라이선스로 공개합니다
