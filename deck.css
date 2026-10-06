@@ -271,6 +271,21 @@ html.fignum .reveal figcaption::before{
 .reveal section.cover.divider h1,
 .reveal section.cover.divider h2{ color:var(--divider-ink) }
 
+/* 표지 오른쪽 QR. 본문 흐름 밖(absolute)이라 제목·부제 줄바꿈에 영향을 주지
+   않습니다. reveal 이 section 을 이미 absolute 로 두므로 기준점은 슬라이드.
+   .noborder 를 못 쓰는 자리라(마크다운 이미지) 테두리를 여기서 끕니다.    */
+.reveal section.cover .cover-qr{
+  position:absolute; right:var(--deck-pad-x); top:50%;
+  transform:translateY(-50%); width:180px; text-align:center;
+}
+.reveal section.cover .cover-qr img{
+  display:block; width:100%; height:auto; margin:0; border:0; box-shadow:none;
+}
+.reveal section.cover .cover-qr .cap{
+  margin:.45em 0 0; font-size:.36em; color:var(--ink-faint); letter-spacing:.01em;
+  white-space:nowrap;   /* 주소를 쪼개지 않습니다 — 좌우로 조금 비어져 나옵니다 */
+}
+
 /* ═══════════════════════════════════════════════════════════════════════
    4. 레이아웃
    ═══════════════════════════════════════════════════════════════════════ */
