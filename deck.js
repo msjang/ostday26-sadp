@@ -481,6 +481,65 @@
     });
   }
 
+  /* ── 남은 시간 타이머 ─────────────────────────────────────────────
+     좌하단 버튼. 누르면 DECK.timer 분에서 거꾸로 떨어집니다.
+     한 번 더 누르면 멈추고, 오른쪽 클릭(또는 길게 누르기)이면 처음으로.
+     키보드 T 로도 시작·정지합니다.
+
+     ⚠ .slides 가 아니라 .reveal 에 답니다. .slides 는 확대/축소가 걸려 있어
+       같이 줄어들고, 인쇄 때 쪽마다 복제됩니다. .reveal 은 transform 이 없어서
+       position:fixed 가 화면 기준으로 먹습니다.
+     ⚠ 시작 시각을 localStorage 에 둡니다 — 발표 도중 새로고침해도 안 잃습니다.  */
+  function makeTimer() {
+    const MIN = Number(DECK.timer) || 0;
+    if (!MIN || isPrint) return;
+    const KEY = 'deck-timer:' + location.pathname;
+    const TOTAL = MIN * 60000;
+
+    const el = document.createElement('button');
+    el.className = 'deck-timer';
+    el.type = 'button';
+    el.title = '클릭: 시작·정지 · 오른쪽 클릭: 처음으로 · 단축키 T';
+    document.querySelector('.reveal').appendChild(el);
+
+    // {startedAt, elapsed}  — 멈춰 있으면 startedAt 이 null 입니다
+    let st = { startedAt: null, elapsed: 0 };
+    try { st = JSON.parse(localStorage.getItem(KEY)) || st; } catch (e) {}
+    const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} };
+    const spent = () => st.elapsed + (st.startedAt ? Date.now() - st.startedAt : 0);
+
+    function draw() {
+      const left = TOTAL - spent();
+      const over = left < 0;
+      const t = Math.abs(left);
+      const mm = Math.floor(t / 60000);
+      const ss = Math.floor(t % 60000 / 1000);
+      el.textContent = (over ? '+' : '') + mm + ':' + String(ss).padStart(2, '0');
+      el.classList.toggle('running', !!st.startedAt);
+      el.classList.toggle('warn', !over && left <= 5 * 60000);
+      el.classList.toggle('over', over);
+    }
+    function toggle() {
+      if (st.startedAt) { st.elapsed = spent(); st.startedAt = null; }
+      else st.startedAt = Date.now();
+      save(); draw();
+    }
+    function reset() { st = { startedAt: null, elapsed: 0 }; save(); draw(); }
+
+    el.addEventListener('click', toggle);
+    el.addEventListener('contextmenu', e => { e.preventDefault(); reset(); });
+    document.addEventListener('keydown', e => {
+      if (e.key !== 't' && e.key !== 'T') return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (/^(INPUT|TEXTAREA)$/.test(e.target.tagName) || e.target.isContentEditable) return;
+      e.preventDefault();
+      e.shiftKey ? reset() : toggle();
+    });
+    setInterval(draw, 250);
+    draw();
+  }
+  makeTimer();
+
   /* ── 슬라이드 비율 ────────────────────────────────────────────────
      reveal 의 width/height 가 곧 슬라이드 좌표계입니다. 여기서 정한 값이
      PDF 쪽 크기(reveal 이 @page 를 주입)와 CSS 의 --slide-h 까지 끌고 갑니다. */

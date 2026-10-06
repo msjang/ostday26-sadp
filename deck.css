@@ -265,6 +265,17 @@ html.fignum .reveal figcaption::before{
 #deck{ display:none }
 [data-markdown]:not([data-markdown-parsed]) textarea{ display:none }
 
+/* .skip — 시간이 모자라면 건너뛸 장. 제목만 회색으로 둡니다.
+   발표자가 제목 색 하나로 완급을 잡는 용도이고, 본문·callout·punch 는
+   건드리지 않습니다(건너뛰지 않기로 하면 평소처럼 쓰는 장이라서).
+   --ink-soft 를 씁니다 — --ink-faint(#8b95a2)는 투사하면 너무 날아갑니다. */
+.reveal section.skip h1,
+.reveal section.skip h2{ color:var(--skip-ink,var(--ink-soft)) }
+/* 제목 안의 번호 칩도 같이 죽입니다 — 파란 칩만 남으면 제목이 반만
+   회색이 돼서 의도가 아니라 렌더링 사고처럼 보입니다 */
+.reveal section.skip h1 .keycap,
+.reveal section.skip h2 .keycap{ background:var(--skip-ink,var(--ink-soft)) }
+
 /* .cover — 표지. 어느 레벨에 붙든(h1/h2) 같은 크기로 */
 .reveal section.cover h1,
 .reveal section.cover h2{ font-size:2.0em; color:var(--ink); margin-bottom:.4em }
@@ -670,3 +681,23 @@ html.callout-noicon .reveal .callout{ --cal-icon:initial }
 .reveal .balance{ text-wrap:balance }
 /* 문단 끝에 단어 하나만 남는 것(고아) 방지 — 본문용 */
 .reveal .pretty{ text-wrap:pretty }
+
+/* ── 남은 시간 타이머 ───────────────────────────────────────────────
+   좌하단. .slides(확대/축소됨)가 아니라 .reveal 에 붙어 있어서 화면 크기가
+   변해도 글자 크기가 그대로입니다. reveal 의 화살표는 우하단이라 안 겹칩니다. */
+.reveal .deck-timer{
+  position:fixed; left:16px; bottom:12px; z-index:40;
+  appearance:none; border:1px solid var(--rule,#dfe4ea); border-radius:8px;
+  background:var(--surface,#fff); color:var(--ink-faint,#8b95a2);
+  font-family:var(--mono); font-size:15px; font-weight:700; letter-spacing:.02em;
+  padding:5px 11px; cursor:pointer; opacity:.55;
+  font-variant-numeric:tabular-nums; transition:opacity .15s, color .15s;
+}
+.reveal .deck-timer:hover{ opacity:1 }
+.reveal .deck-timer.running{ opacity:.95; color:var(--ink-soft,#5b6775) }
+.reveal .deck-timer.warn{ opacity:1; color:#b4590f; border-color:#f0c9a3 }
+.reveal .deck-timer.over{ opacity:1; color:#fff; background:#c0392b; border-color:#c0392b }
+
+/* 인쇄에는 안 나갑니다 */
+html.reveal-print .reveal .deck-timer{ display:none }
+@media print{ .reveal .deck-timer{ display:none } }
