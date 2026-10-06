@@ -515,29 +515,59 @@
        취소하면 손떨림만으로도 길게 누르기가 안 먹습니다.                 */
   const HOLD_MS = 600;
   function longPressable(el, { onLong, onTap, onContext }) {
-    let t = null, fired = false, px = 0, py = 0;
+    let t = null, fired = false, px = 0, py = 0, viaTouch = false;
     const cancel = () => { clearTimeout(t); t = null; };
-    el.addEventListener('pointerdown', e => {
-      px = e.clientX; py = e.clientY; cancel();
+    const start  = (x, y) => {
+      px = x; py = y; cancel();
       t = setTimeout(() => {
-        fired = true; cancel();
+        t = null; fired = true;
         onLong();
         el.classList.add('flash');
         setTimeout(() => el.classList.remove('flash'), 320);
         if (navigator.vibrate) navigator.vibrate(30);
       }, HOLD_MS);
+    };
+    const move   = (x, y) => { if (t && Math.hypot(x - px, y - py) > 10) cancel(); };
+    const settle = () => { const f = fired; fired = false; cancel(); if (!f && onTap) onTap(); };
+
+    /* ── 터치 ─────────────────────────────────────────────────────
+       ⚠ 터치에서 pointer 이벤트만 쓰면 안 됩니다. iOS 는 손가락이 멈춰
+         있어도 스크롤 제스처로 판단되는 순간 pointercancel 을 쏘고,
+         그러면 0.6초 타이머가 취소돼 길게 누르기가 아예 안 먹습니다.
+         터치는 touch 이벤트로 직접 받습니다.
+       ⚠ stopPropagation — 안 그러면 reveal 의 스와이프 네비게이션이
+         같은 손가락을 집어 슬라이드를 넘겨 버립니다.
+       ⚠ touchend 에서 preventDefault — 뒤따라오는 합성 click 을 막습니다. */
+    el.addEventListener('touchstart', e => {
+      e.stopPropagation(); viaTouch = true;
+      start(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+    el.addEventListener('touchmove', e => {
+      move(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+    el.addEventListener('touchend', e => {
+      e.stopPropagation(); e.preventDefault(); settle(); viaTouch = false;
     });
-    el.addEventListener('pointermove', e => {
-      if (t && Math.hypot(e.clientX - px, e.clientY - py) > 10) cancel();
-    });
-    ['pointerup', 'pointercancel', 'pointerleave'].forEach(x => el.addEventListener(x, cancel));
-    el.addEventListener('click', () => {
-      if (fired) { fired = false; return; }
-      if (onTap) onTap();
-    });
+    el.addEventListener('touchcancel', () => { cancel(); viaTouch = false; });
+
+    /* ── 마우스·펜 ───────────────────────────────────────────────
+       pointerType 이 touch 면 위에서 이미 처리했으므로 지나갑니다.
+       오른쪽 버튼(button!==0)은 contextmenu 가 따로 받습니다 —
+       여기서 같이 받으면 초기화와 토글이 연달아 일어납니다.          */
+    const mouse = e => e.pointerType !== 'touch' && e.button === 0;
+    el.addEventListener('pointerdown', e => { if (mouse(e)) start(e.clientX, e.clientY); });
+    el.addEventListener('pointermove', e => { if (mouse(e)) move(e.clientX, e.clientY); });
+    el.addEventListener('pointerup',   e => { if (mouse(e)) settle(); });
+    // ⚠ 터치가 주도 중이면 포인터 쪽 취소는 무시합니다. iOS 는 손가락이
+    //   멈춰 있어도 pointercancel 을 쏘는데, 그걸 그대로 받으면 길게
+    //   누르기가 영영 안 먹습니다. 터치의 끝은 touchend/touchcancel 뿐입니다.
+    const pointerCancel = () => { if (!viaTouch) cancel(); };
+    el.addEventListener('pointercancel', pointerCancel);
+    el.addEventListener('pointerleave', pointerCancel);
+
+    el.addEventListener('click', e => e.preventDefault());   // 위에서 다 처리했습니다
     el.addEventListener('contextmenu', e => {
-      e.preventDefault();
-      if (onContext) onContext();
+      e.preventDefault(); cancel(); if (onContext) onContext();
     });
   }
 

@@ -707,7 +707,9 @@ html.callout-noicon .reveal .callout{ --cal-icon:initial }
    ⚠ 버튼에만 걸면 모자랍니다 — 터치가 바구니(div)에서 시작하면
      거기서부터 선택이 잡힙니다. 자손까지 함께 끕니다.                   */
 .reveal .deck-tools, .reveal .deck-tools *{
-  touch-action:manipulation;
+  /* none 이어야 합니다 — manipulation 이면 브라우저가 팬 제스처를 먼저
+     가져가면서 pointercancel/touchcancel 이 떠 길게 누르기가 취소됩니다 */
+  touch-action:none;
   user-select:none; -webkit-user-select:none;
   -webkit-touch-callout:none; -webkit-tap-highlight-color:transparent;
 }
