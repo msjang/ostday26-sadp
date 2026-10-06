@@ -2162,7 +2162,9 @@ To 에 **팀원을 전부** 넣습니다 · **봇 전용 메일 주소**를 따�
 :::
 
 ::: ref
-질병관리청 실측 2026. 9. 17. — `www.cdc.go.kr/kdca/5468/subview.do` : ① SSL 인증서에 `cdc.go.kr` 이름이 없어 **브라우저가 먼저 막고** ② 넘겨도 `302 Found → www.kdca.go.kr` **루트로만**. 리다이렉트를 「했다」고 보고할 수는 있지만 **링크는 죽어 있습니다**\
+출처 — **IT동아 김대은 「질병관리청은 왜 '죽은 링크'를 관리하지 않을까」** 2021. 4. 27. [it.donga.com/31878](https://it.donga.com/31878/) · 동아일보 재게재 [106636945](https://www.donga.com/news/It/article/all/20210427/106636945/1)\
+보조 — 임민철 「정부의 웹사이트 총량제는 코로나19 방역을 어떻게 방해하나」 [mincheol.im/143](https://mincheol.im/143) (북저널리즘 2021 → 2025. 3. 공개 · 논증 위주, 폐쇄 사례 목록은 없음)\
+실측 2026. 9. 17. — `curl -skI -L https://www.cdc.go.kr/kdca/5468/subview.do` → ① 인증서에 `cdc.go.kr` 이름 없음 ② `302 Found → www.kdca.go.kr` **경로 소실**\
 ScienceON 연구자(장민석) — `scienceon.kisti.re.kr/…?cn=ADPER6801759152` · 화면 표시 **ISNI 0000 0004 6784 8612**\
 [ISNI KOREA — 국립중앙도서관](https://nl.go.kr/isni/0000000467848612) · KISTI 는 2016년 세계 10번째 **DOI 등록관리기관(RA)**
 :::
