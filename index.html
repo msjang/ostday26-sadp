@@ -1098,7 +1098,6 @@ networks:
 
 services:
   proxy:  { networks: [edge, app], ports: ["443:443"] }
-  egress: { networks: [edge, app] }   # 유일한 출구 — 03 의 squid 한 대
   was:    { networks: [app, data] }   # edge 에 없음 → 나갈 길이 없음
   db:     { networks: [data] }        # 가장 깊은 자리
 ```
@@ -1121,10 +1120,14 @@ services:
 - **「iptables 를 안 써도 WAS·DB 는 나갈 수가 없다」가 이 장의 전부다.**
   게이트웨이 자체가 안 붙는다. 선언으로 끝나는 격리
 - ⚠ 걸리는 데 셋 (물으면)
-  · `internal` 망에서는 **외부 이름 해석이 안 된다.** `egress` 같은 **서비스 이름은
+  · `internal` 망에서는 **외부 이름 해석이 안 된다.** `db` 같은 **서비스 이름은
     되고**(도커 내장 DNS) `api.example.com` 은 안 된다. 의도된 동작 — 해석은 프록시가 한다
   · **`ports:` 를 internal 망 서비스에 못 쓴다.** 그래서 `proxy` 만 가진다
   · 망 두 개에 붙이면 끝. `was` 가 `[app, data]` 인 게 전부다
+- ⚠ **이 yml 에 03 의 squid(egress 서비스)를 넣지 말 것.** 프로덕션용이고,
+  squid 는 `apt`·`pip` 받는 **빌드·설치 시점**에만 필요하다. 넣으면 상시 출구를
+  하나 뚫어두는 셈이라 이 장의 주장이 그 자리에서 무너진다.
+  `edge` 에 붙는 건 `proxy` 하나 — 04 의 DNS-01 때문에 caddy 만 나가면 된다
 - 타이머 한 줄이 **5부 ⑤(긴급 조치에 만료일)의 코드판**이다.
   1부 「임시 조치에 만료일이 없었다」가 여기서 회수된다
 - 유일한 실패 모드 = 다시 닫는 걸 잊는 것. 그래서 자동 재잠금이 핵심
