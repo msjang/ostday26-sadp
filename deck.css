@@ -278,13 +278,15 @@ html.fignum .reveal figcaption::before{
 /* .skip — 시간이 모자라면 건너뛸 장. 제목만 회색으로 둡니다.
    발표자가 제목 색 하나로 완급을 잡는 용도이고, 본문·callout·punch 는
    건드리지 않습니다(건너뛰지 않기로 하면 평소처럼 쓰는 장이라서).
-   --ink-soft 를 씁니다 — --ink-faint(#8b95a2)는 투사하면 너무 날아갑니다. */
+   --ink-faint(#8b95a2) — 흰 바탕 대비 3.0:1 로, 큰 제목 기준 하한선입니다.
+   더 연하게 하려면 --skip-ink 를 덮으세요. 다만 2.5:1 아래로 내려가면
+   뒷자리에서 제목이 안 읽히고, 의도가 아니라 렌더링 사고로 보입니다.    */
 .reveal section.skip h1,
-.reveal section.skip h2{ color:var(--skip-ink,var(--ink-soft)) }
+.reveal section.skip h2{ color:var(--skip-ink,var(--ink-faint)) }
 /* 제목 안의 번호 칩도 같이 죽입니다 — 파란 칩만 남으면 제목이 반만
    회색이 돼서 의도가 아니라 렌더링 사고처럼 보입니다 */
 .reveal section.skip h1 .keycap,
-.reveal section.skip h2 .keycap{ background:var(--skip-ink,var(--ink-soft)) }
+.reveal section.skip h2 .keycap{ background:var(--skip-ink,var(--ink-faint)) }
 
 /* .cover — 표지. 어느 레벨에 붙든(h1/h2) 같은 크기로 */
 .reveal section.cover h1,
