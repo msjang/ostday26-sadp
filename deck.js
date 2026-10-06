@@ -504,6 +504,43 @@
     return _tools;
   }
 
+  /* ── 길게 누르기 ──────────────────────────────────────────────────
+     폰에는 오른쪽 클릭도 단축키도 없습니다. 되돌리기 어려운 동작은
+     짧은 탭으로 받으면 안 됩니다 — 발표 중에 손이 스치면 그대로 벌어집니다.
+     그래서 0.6초 누르고 있어야 먹게 합니다.
+
+     ⚠ 길게 누른 뒤에도 click 이 한 번 더 옵니다. 그대로 두면 길게누르기와
+       짧은탭이 연달아 실행됩니다. fired 플래그로 그 click 을 버립니다.
+     ⚠ 손가락이 10px 넘게 움직이면 취소합니다. pointermove 로 무조건
+       취소하면 손떨림만으로도 길게 누르기가 안 먹습니다.                 */
+  const HOLD_MS = 600;
+  function longPressable(el, { onLong, onTap, onContext }) {
+    let t = null, fired = false, px = 0, py = 0;
+    const cancel = () => { clearTimeout(t); t = null; };
+    el.addEventListener('pointerdown', e => {
+      px = e.clientX; py = e.clientY; cancel();
+      t = setTimeout(() => {
+        fired = true; cancel();
+        onLong();
+        el.classList.add('flash');
+        setTimeout(() => el.classList.remove('flash'), 320);
+        if (navigator.vibrate) navigator.vibrate(30);
+      }, HOLD_MS);
+    });
+    el.addEventListener('pointermove', e => {
+      if (t && Math.hypot(e.clientX - px, e.clientY - py) > 10) cancel();
+    });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(x => el.addEventListener(x, cancel));
+    el.addEventListener('click', () => {
+      if (fired) { fired = false; return; }
+      if (onTap) onTap();
+    });
+    el.addEventListener('contextmenu', e => {
+      e.preventDefault();
+      if (onContext) onContext();
+    });
+  }
+
   /* ── 짧은 모드 ────────────────────────────────────────────────────
      {.skip} 장을 덱에서 빼 버립니다. 회색 제목은 '이 장은 버려도 된다'는
      상태만 말할 뿐 넘기라는 지시가 아니어서, 눈으로 보고도 입이 먼저
@@ -523,10 +560,10 @@
     const btn = document.createElement('button');
     btn.className = 'deck-short';
     btn.type = 'button';
-    btn.title = '짧은 모드 — 회색 제목 ' + skips.length + '장을 덱에서 뺍니다 (단축키 K)';
+    btn.title = '짧은 모드 — 회색 제목 ' + skips.length + '장을 덱에서 뺍니다. 길게 누르세요 (단축키 K)';
     tools().prepend(btn);          // 시계 왼쪽
 
-    let on = false;
+    let on = false, hintTimer = null;
     try { on = localStorage.getItem(KEY) === '1'; } catch (e) {}
 
     const inDom = s => !!s.parentNode;
@@ -550,6 +587,7 @@
       }
 
       btn.classList.toggle('on', on);
+      clearTimeout(hintTimer);                  // 힌트가 떠 있었으면 지웁니다
       btn.textContent = on ? '짧은 모드' : '전체';
       try { localStorage.setItem(KEY, on ? '1' : '0'); } catch (e) {}
 
@@ -568,7 +606,15 @@
     }
     function toggle() { on = !on; apply(); }
 
-    btn.addEventListener('click', toggle);
+    // 토글은 '길게 누르기'로만. 발표 중에 손이 스쳐서 덱이 10장 줄어드는
+    // 사고를 막습니다. 짧게 누르면 「길게 ▸」를 잠깐 띄워 방법을 알려 줍니다.
+    function hint() {
+      clearTimeout(hintTimer);
+      btn.textContent = '길게 ▸';
+      hintTimer = setTimeout(() => { btn.textContent = on ? '짧은 모드' : '전체'; }, 900);
+    }
+    longPressable(btn, { onLong: toggle, onTap: hint, onContext: toggle });
+
     document.addEventListener('keydown', e => {
       if (e.key !== 'k' && e.key !== 'K') return;
       if (e.metaKey || e.ctrlKey || e.altKey) return;
@@ -657,35 +703,8 @@
     }
     onSlideForTimer = newSlide;
 
-    /* 길게 누르면 초기화 — 폰에는 오른쪽 클릭도 Shift+T 도 없습니다.
-       누른 채 0.6초가 지나면 리셋하고, 버튼을 한 번 번쩍여 알려줍니다.
-       pointer 이벤트 하나로 마우스·터치·펜을 같이 받습니다.
-       ⚠ 손가락이 10px 넘게 움직이면 취소합니다. 그냥 pointermove 로
-         취소하면 손떨림만으로도 길게 누르기가 안 먹습니다.               */
-    let longTimer = null, longFired = false, px = 0, py = 0;
-    const cancelLong = () => { clearTimeout(longTimer); longTimer = null; };
-    el.addEventListener('pointerdown', e => {
-      px = e.clientX; py = e.clientY;
-      cancelLong();
-      longTimer = setTimeout(() => {
-        longFired = true;
-        reset();
-        el.classList.add('flash');
-        setTimeout(() => el.classList.remove('flash'), 320);
-        if (navigator.vibrate) navigator.vibrate(30);
-      }, 600);
-    });
-    el.addEventListener('pointermove', e => {
-      if (longTimer && Math.hypot(e.clientX - px, e.clientY - py) > 10) cancelLong();
-    });
-    ['pointerup', 'pointercancel', 'pointerleave'].forEach(
-      t => el.addEventListener(t, cancelLong));
+    longPressable(el, { onLong: reset, onTap: toggle, onContext: reset });
 
-    el.addEventListener('click', () => {
-      if (longFired) { longFired = false; return; }   // 길게 누른 직후의 click 은 버립니다
-      toggle();
-    });
-    el.addEventListener('contextmenu', e => { e.preventDefault(); reset(); });
     document.addEventListener('keydown', e => {
       if (e.key !== 't' && e.key !== 'T') return;
       if (e.metaKey || e.ctrlKey || e.altKey) return;
