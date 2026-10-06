@@ -128,6 +128,16 @@ html.reveal-print .reveal .slides section:not(.stack){
 html.reveal-print .reveal .slides section.center{ padding-bottom:var(--deck-pad-top) !important }
 html.reveal-print .reveal .slides section.bare  { padding:56px var(--deck-pad-x) !important }
 
+/* 간지(.divider)의 짙은 배경이 '용지 전체'를 덮게 합니다.
+   화면에서는 .backgrounds 안의 .slide-background 가 칠하는데(아래 7절),
+   인쇄에서는 reveal 이 구조를 .slides > .pdf-page > section 으로 바꿔
+   그 선택자가 빗나갑니다. 그러면 section 만 칠해져서 바깥 4% 가 흰 띠로
+   남습니다 — PDF 간지 5장이 전부 '가운데 띠'로 나왔던 원인.               */
+html.reveal-print .reveal .slide-background.divider,
+html.reveal-print .reveal .slides .pdf-page:has(> section.divider){
+  background-color:var(--divider-bg,#102746);
+}
+
 /* ═══════════════════════════════════════════════════════════════════════
    2. 상단 chapnav · 하단 footer
    ═══════════════════════════════════════════════════════════════════════
