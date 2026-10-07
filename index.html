@@ -42,7 +42,7 @@ window.DECK = {
 
   chapnav: true,   // 상단 챕터 내비 (클릭하면 해당 간지로 이동)
   footer:  true,   // 하단 행사·연사·일자·쪽번호
-  timer:   40,     // 좌하단 남은시간 타이머(분). 0 이면 안 그립니다
+  timer:   30,     // 좌하단 남은시간 타이머(분). 0 이면 안 그립니다
   slideWarn: 90,   // 「이 장」이 몇 초를 넘으면 주황
   slideOver: 120,  // 몇 초를 넘으면 빨강 + 깜빡
 
@@ -100,10 +100,10 @@ document.documentElement.className = [
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
-<link rel="stylesheet" href="deck.css">
+<link rel="stylesheet" href="deck.css?v=20261007a">
 <!-- 테마 — 색과 글꼴. themes/ 에서 하나 고르세요.
      slate(기본) · carbon(기관·학술) · solarized(따뜻한 세리프) · nord(어두운 홀) -->
-<link rel="stylesheet" href="themes/cobalt.css">
+<link rel="stylesheet" href="themes/cobalt.css?v=20261007a">
 </head>
 <body>
 <!-- ╔═══════════════════════════════════════════════════════════════════╗
@@ -2867,6 +2867,11 @@ k8s로 하든, docker compose 경량판으로 하든, 기존 인프라에 얹든
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/markdown/markdown.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
-<script src="deck.js"></script>
+<script>
+// 「짧은 모드」는 제거된 기능입니다. 옛 deck.js 가 캐시에 남아 있다가
+// 이 값을 보고 슬라이드를 DOM 에서 빼 버리는 사고를 막습니다.
+try { localStorage.removeItem('deck-short:' + location.pathname); } catch (e) {}
+</script>
+<script src="deck.js?v=20261007a"></script>
 </body>
 </html>
