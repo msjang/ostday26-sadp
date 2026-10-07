@@ -170,8 +170,11 @@ fetch('index.html', { cache: 'no-store' })
     });
 
     document.getElementById('out').innerHTML = out.join('');
+    // 회색 장이 없으면(= 전체판) 그 토글은 할 일이 없으므로 숨깁니다
+    const nSkip = slides.filter(s => s.cls.includes('skip')).length;
+    document.getElementById('hideSkip').hidden = !nSkip;
     document.getElementById('meta').textContent =
-      slides.length + '장 · 회색 ' + slides.filter(s => s.cls.includes('skip')).length + '장';
+      slides.length + '장' + (nSkip ? ' · 회색 ' + nSkip + '장' : '');
   })
   .catch(e => {
     document.getElementById('out').innerHTML =
