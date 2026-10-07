@@ -1,0 +1,201 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>대본 — AI 시대, 빠르고 안전한 앱 프로토타입</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:,">
+
+<!-- ════════════════════════════════════════════════════════════════════
+     발표 대본 — index.html 의 ::: notes 만 모아 세로로 읽는 페이지입니다.
+
+     ⚠ 내용을 여기에 복사해 두지 않습니다. 열 때마다 index.html 을 받아
+       그 자리에서 파싱합니다. 노트를 고치면 여기도 따라옵니다.
+     ⚠ 슬라이드 자르는 규칙은 deck.js 와 같아야 합니다 — 행 머리의
+       `# `/`## ` 하나가 슬라이드 하나. 다르면 번호가 어긋납니다.
+     ════════════════════════════════════════════════════════════════════ -->
+
+<style>
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+
+:root{
+  --bg:#ffffff; --card:#ffffff; --ink:#16202b; --soft:#5b6775; --faint:#8b95a2;
+  --rule:#e3e9f0; --accent:#1a4f9c; --key:#c2610d; --skip:#8b95a2;
+  --divider-bg:#102746; --fs:17px;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#141a21; --card:#1b232c; --ink:#e8edf3; --soft:#aab4c0; --faint:#7d8795;
+         --rule:#2a343f; --accent:#7aa6e3; --key:#e9954a; --skip:#7d8795; --divider-bg:#0d1c2f }
+}
+*{ box-sizing:border-box }
+html{ -webkit-text-size-adjust:100% }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  font-size:var(--fs); line-height:1.75;
+  /* 한글 줄바꿈 — 음절 중간에서 끊기지 않게. 긴 URL 만 넘칠 때 끊습니다 */
+  word-break:keep-all; overflow-wrap:break-word;
+  padding-bottom:4rem;
+}
+
+/* ── 상단 바 ───────────────────────────────────────────────────── */
+header{
+  position:sticky; top:0; z-index:10;
+  background:color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter:blur(8px); border-bottom:1px solid var(--rule);
+  padding:.5rem .9rem; padding-top:calc(.5rem + env(safe-area-inset-top));
+  display:flex; align-items:center; gap:.5rem; flex-wrap:wrap;
+}
+header b{ font-size:.86em; margin-right:auto }
+header .meta{ color:var(--faint); font-size:.72em; font-weight:400 }
+button{
+  appearance:none; border:1px solid var(--rule); border-radius:8px;
+  background:var(--card); color:var(--soft); font:inherit; font-size:.76em; font-weight:700;
+  padding:.3rem .62rem; cursor:pointer; white-space:nowrap;
+  -webkit-tap-highlight-color:transparent;
+}
+button.on{ background:var(--accent); border-color:var(--accent); color:#fff }
+
+/* ── 부(部) 간지 — 짙은 카드 한 장으로 ─────────────────────────── */
+article.part{
+  margin-top:1.7rem; background:var(--divider-bg); border-color:var(--divider-bg); color:#fff;
+}
+article.part h2{ color:#fff }
+article.part h2 .no{ color:rgba(255,255,255,.6) }
+article.part .body{ color:rgba(255,255,255,.88) }
+
+/* ── 슬라이드 한 칸 ────────────────────────────────────────────── */
+article{
+  margin:.7rem; padding:.85rem .95rem; border:1px solid var(--rule);
+  border-radius:12px; background:var(--card); scroll-margin-top:4rem;
+}
+article.skip{ opacity:.72 }
+h2{
+  margin:0 0 .5rem; font-size:1.02em; line-height:1.45; font-weight:800;
+  color:var(--accent); display:flex; gap:.5rem; align-items:baseline;
+}
+h2 .no{
+  flex:none; font-size:.72em; font-weight:700; color:var(--faint);
+  font-variant-numeric:tabular-nums; min-width:3.4em;
+}
+article.skip h2{ color:var(--skip) }
+article.key  h2{ color:var(--key) }
+h2 sup{ font-size:.62em; font-weight:600; opacity:.75 }
+.body p{ margin:0 0 .72em }
+.body p:last-child{ margin-bottom:0 }
+.body strong{ font-weight:800 }
+.none{ color:var(--faint); font-size:.86em }
+.warn{
+  margin:.7rem; padding:.7rem .9rem; border-radius:12px;
+  background:#fdecec; color:#8c2b2b; border:1px solid #f0bcbc; font-size:.86em;
+}
+footer{ color:var(--faint); font-size:.76em; text-align:center; margin:2rem .9rem }
+</style>
+
+<header>
+  <b>대본 <span class="meta" id="meta"></span></b>
+  <button id="hideSkip">회색 숨기기</button>
+  <button id="smaller">가&minus;</button>
+  <button id="bigger">가&plus;</button>
+</header>
+
+<main id="out"><p style="margin:2rem .9rem;color:#8b95a2">index.html 읽는 중…</p></main>
+<footer>원본은 index.html 입니다. 노트를 고치면 이 페이지도 따라옵니다.</footer>
+
+<script>
+const esc = t => t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+// 노트 본문 — 최소한의 마크다운만. **굵게** 와 빈 줄 문단 나누기.
+function body(lines){
+  const paras = lines.join('\n').trim().split(/\n\s*\n/);
+  return paras.map(p =>
+    '<p>' + esc(p).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+                  .replace(/\n/g, '<br>') + '</p>').join('');
+}
+
+// 제목의 중괄호 속성을 떼고 클래스만 뽑습니다 (deck.js 와 같은 자리)
+function head(raw){
+  const m = raw.match(/^(.*?)\s*\{([^{}]+)\}\s*$/);
+  const cls = [];
+  if (m) for (const t of m[2].split(/\s+/)) if (t[0] === '.') cls.push(t.slice(1));
+  return { title: (m ? m[1] : raw).replace(/<br\s*\/?>/gi, ' '), cls };
+}
+
+fetch('index.html', { cache: 'no-store' })
+  .then(r => r.text())
+  .then(html => {
+    const ta = html.match(/<textarea id="deck">([\s\S]*?)<\/textarea>/);
+    if (!ta) throw new Error('index.html 에서 <textarea id="deck"> 를 못 찾았습니다');
+
+    // 주석 블록은 통째로 뺍니다 — 보류해 둔 슬라이드가 대본에 섞이지 않게.
+    // 다만 주석 안에 행 머리 ## 가 있으면 deck.js 는 그걸 **슬라이드로 자르므로**
+    // 번호가 어긋납니다. 그 함정을 여기서 잡아 경고합니다.
+    let trap = 0;
+    const md = ta[1].replace(/<!--[\s\S]*?-->/g, c => {
+      if (/^#{1,6}\s+/m.test(c)) trap++;
+      return '';
+    });
+
+    const slides = [];
+    let cur = null, inCode = false, notes = null;
+    for (const line of md.split('\n')) {
+      if (/^\s*(```|~~~)/.test(line)) { inCode = !inCode; }
+      const h = inCode ? null : line.match(/^(#{1,2})\s+(.+?)\s*$/);
+      if (h) {
+        const a = head(h[2]);
+        cur = { lv: h[1].length, title: a.title, cls: a.cls, notes: [] };
+        slides.push(cur); notes = null; continue;
+      }
+      if (!cur) continue;
+      if (line.trim() === '::: notes') { notes = cur.notes; continue; }
+      if (notes && line.trim() === ':::') { notes = null; continue; }
+      if (notes) notes.push(line);
+    }
+
+    const out = [];
+    if (trap) out.push('<div class="warn">⚠ 주석 처리된 블록 ' + trap +
+      '곳에 <b>행 머리 ## 제목</b>이 있습니다. deck.js 는 그걸 슬라이드로 자르므로 ' +
+      '실제 덱에는 그 장이 <b>그대로 나오고</b> 번호도 여기와 어긋납니다. ' +
+      '제목을 여는 주석과 같은 줄로 옮기세요.</div>');
+
+    slides.forEach((s, i) => {
+      // 간지(# )는 짙은 카드 하나로 합칩니다 — 카드와 항목으로 두 번 나오면
+      // 스크롤에서 같은 제목이 연달아 보여 눈이 걸립니다.
+      const cls = ['skip', 'key'].filter(c => s.cls.includes(c));
+      if (s.lv === 1) cls.push('part');
+      out.push('<article class="' + cls.join(' ') + '" id="s' + i + '">' +
+        '<h2><span class="no">' + (i + 1) + '/' + slides.length + '</span>' +
+        '<span>' + s.title + '</span></h2>' +
+        '<div class="body">' +
+          (s.notes.join('').trim() ? body(s.notes) : '<p class="none">— 대본 없음 —</p>') +
+        '</div></article>');
+    });
+
+    document.getElementById('out').innerHTML = out.join('');
+    document.getElementById('meta').textContent =
+      slides.length + '장 · 회색 ' + slides.filter(s => s.cls.includes('skip')).length + '장';
+  })
+  .catch(e => {
+    document.getElementById('out').innerHTML =
+      '<div class="warn">' + esc(e.message) +
+      '<br><br>이 페이지는 index.html 을 같은 서버에서 받아옵니다. ' +
+      'file:// 로 직접 열면 브라우저가 막습니다 — 웹 주소로 여세요.</div>';
+  });
+
+// 회색 숨기기
+document.getElementById('hideSkip').addEventListener('click', e => {
+  const on = e.target.classList.toggle('on');
+  document.querySelectorAll('article.skip').forEach(a => a.style.display = on ? 'none' : '');
+  e.target.textContent = on ? '회색 보이기' : '회색 숨기기';
+});
+
+// 글자 크기 — 폰마다 편한 크기가 다릅니다. localStorage 에 기억합니다.
+const root = document.documentElement;
+let fs = Number(localStorage.getItem('script-fs')) || 17;
+const setFs = v => {
+  fs = Math.min(24, Math.max(13, v));
+  root.style.setProperty('--fs', fs + 'px');
+  localStorage.setItem('script-fs', fs);
+};
+setFs(fs);
+document.getElementById('smaller').addEventListener('click', () => setFs(fs - 1));
+document.getElementById('bigger').addEventListener('click', () => setFs(fs + 1));
+</script>
