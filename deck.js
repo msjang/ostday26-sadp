@@ -461,12 +461,36 @@
 
   const live = isPrint ? null : makeBars(slidesEl);
   let onSlideForTimer = null;          // makeTimer 가 채웁니다 (장별 시계 리셋)
+
+  /* ── {.skip} 도착 시 흐리게 ───────────────────────────────────────
+     회색 제목만으로는 「넘겨라」가 안 읽혀서, 도착하는 순간 장 전체를
+     살짝 흐리게 합니다. 눈이 글을 못 읽으니 입이 안 나갑니다.
+
+     ⚠ 화면이 그대로 중계되므로 청중도 같이 봅니다. 그래서 **가만히 두면
+       저절로 선명해집니다**(DECK.skipBlurHold). 넘길 거면 흐린 채로
+       지나가고, 하기로 하면 알아서 맑아집니다. 흐린 슬라이드를 설명하고
+       있는 그림이 제일 나쁩니다.
+     ⚠ 인쇄에는 안 겁니다.                                              */
+  const BLUR_PX   = isPrint ? 0 : (DECK.skipBlur == null ? 1.6 : Number(DECK.skipBlur));
+  const BLUR_HOLD = DECK.skipBlurHold == null ? 2500 : Number(DECK.skipBlurHold);
+  if (BLUR_PX) document.documentElement.style
+      .setProperty('--skip-blur', BLUR_PX + 'px');
+  let blurTimer = null;
+  function blurOnArrive(sec) {
+    if (!BLUR_PX) return;
+    clearTimeout(blurTimer);
+    sections.forEach(x => x.classList.remove('blurred'));
+    if (!sec || !sec.classList.contains('skip')) return;
+    sec.classList.add('blurred');
+    blurTimer = setTimeout(() => sec.classList.remove('blurred'), BLUR_HOLD);
+  }
   const sync = () => {
     const cur = Reveal.getCurrentSlide();
     if (!cur) return;
     const i = sections.indexOf(cur);
     if (live) paint(live, i);
     if (onSlideForTimer) onSlideForTimer();
+    blurOnArrive(cur);
     whenMeasurable(cur, () => measure(cur, live));
   };
 

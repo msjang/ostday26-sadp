@@ -275,6 +275,16 @@ html.fignum .reveal figcaption::before{
 .reveal section.key h1 .keycap,
 .reveal section.key h2 .keycap{ background:var(--key-ink,#c2610d) }
 
+/* {.skip} 에 도착하면 잠깐 흐려졌다가 저절로 선명해집니다.
+   변수는 deck.js 가 DECK.skipBlur 로 채웁니다. 전이를 길게(.7s) 둬서
+   맑아지는 게 '고장'이 아니라 '풀리는 것'으로 보이게 합니다. */
+.reveal .slides section.skip{ transition:filter .7s ease-out }
+.reveal .slides section.skip.blurred{ filter:blur(var(--skip-blur,1.6px)) }
+@media (prefers-reduced-motion:reduce){
+  .reveal .slides section.skip{ transition:none }
+}
+html.reveal-print .reveal .slides section.skip{ filter:none !important }
+
 /* .skip — 시간이 모자라면 건너뛸 장. 제목만 회색으로 둡니다.
    발표자가 제목 색 하나로 완급을 잡는 용도이고, 본문·callout·punch 는
    건드리지 않습니다(건너뛰지 않기로 하면 평소처럼 쓰는 장이라서).
